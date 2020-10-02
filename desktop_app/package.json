@@ -93,6 +93,7 @@
     "@material-ui/icons": "^4.9.1",
     "babel-loader": "^8.1.0",
     "electron-squirrel-startup": "^1.0.0",
+    "firebase": "^7.22.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
