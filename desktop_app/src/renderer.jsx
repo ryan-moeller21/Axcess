@@ -2,7 +2,7 @@ import './index.css'
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import MainPage from './components/MainPage.jsx'
+import AuthContainer from './components/AuthContainer.jsx'
 
 import * as firebase from 'firebase'
 
@@ -17,9 +17,10 @@ const firebaseConfig = {
   measurementId: "G-RMY9X4B2Z9"
 };
 firebase.initializeApp(firebaseConfig)
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
 
 console.log('Loaded React.')
 ReactDOM.render(
-    <MainPage />,
+    <AuthContainer />,
     document.getElementById('root')
 )
