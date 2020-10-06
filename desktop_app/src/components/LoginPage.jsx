@@ -79,7 +79,6 @@ export default function LoginPage() {
             if (result.data() != undefined) {
                 hash(password, result.data().salt)
                 .then((hashedPassword) => {
-                    console.log(hashedPassword)
                     firebase.auth().signInWithEmailAndPassword(email, hashedPassword)
                     .catch(function(error) {
                         console.log(error)
@@ -104,13 +103,10 @@ export default function LoginPage() {
         if (!email || !password) {
             return
         }
-    
-        console.log("Called authWithEmail")
         if (passwordConfirmation && passwordConfirmation != password) {
             alert("Passwords don't match")
             return
         }
-    
         if (passwordConfirmation) {
             createNewUser(email, password)
         } else {
