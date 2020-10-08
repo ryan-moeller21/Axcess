@@ -29,7 +29,7 @@ export default function LoginPage(props) {
     const [snackbarText, setSnackbarText] = useState('')
     const [snackbarSeverity, setSnackbarSeverity] = useState(SEVERITY.ERROR)
 
-    let mounted = false
+    let mounted = true
 
     var changeAuthTypeText = createNewAccount
         ? 'I already have an account'
