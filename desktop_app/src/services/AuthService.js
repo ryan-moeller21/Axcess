@@ -1,4 +1,4 @@
-import firebase from 'firebase/app'
+import firebase from 'firebase' // TODO: We should be using 'firebase/app', which is recommended for real builds. However, this causes firebase.firestore() to fail! Why??
 import 'firebase/firebase-auth'
 import { SEVERITY } from '../components/SnackbarManager.jsx'
 import bcrypt, { hash } from 'bcryptjs'
@@ -88,7 +88,9 @@ function signIn(email, password, resolve, reject) {
     const db = firebase.firestore()
     db.collection('salts').doc(email).get()
     .then((result) => {
-        if (result.data() != undefined) {
+        // The password should be guaranteed to not be undefined, but I would occasionally get an error from
+        // bcrypt complaining about the password being undefined... Not sure why, but this check prevents that.
+        if (password != undefined && result.data() != undefined) {
             hash(password, result.data().salt)
             .then((hashedPassword) => {
                 firebase.auth().signInWithEmailAndPassword(email, hashedPassword)
@@ -98,7 +100,7 @@ function signIn(email, password, resolve, reject) {
                         severity: SEVERITY.SUCCESS
                     })
                 })
-                .catch(function(error) {
+                .catch((err) => {
                     reject({
                         msg: 'Incorrect username/password specified.',
                         severity: SEVERITY.ERROR
@@ -120,6 +122,6 @@ function signIn(email, password, resolve, reject) {
             msg: 'Database error, try again later.',
             severity: SEVERITY.ERROR
         })
-        throw err
+        console.log(err)
     })
 }
