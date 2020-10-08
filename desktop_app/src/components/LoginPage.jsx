@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { TextField, Container, Button, Card, Typography } from '@material-ui/core'
-import { authWithEmail } from '../services/AuthService'
+import { tryLoginOrRegister } from '../services/AuthService'
+import SnackbarManager, { SEVERITY } from './SnackbarManager.jsx'
 
 const useStyles = makeStyles((theme) => ({
     textCenter: {
@@ -15,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-export default function LoginPage() {
+export default function LoginPage(props) {
     const classes = useStyles()
 
     const [email, setEmail] = useState(undefined)
@@ -23,41 +24,61 @@ export default function LoginPage() {
     const [passwordConfirm, setPasswordConfirm] = useState(undefined)
     const [createNewAccount, setCreateNewAccount] = useState(false)
 
-    var loginButtonText = createNewAccount
-        ? 'Create account'
-        : 'Log in'
+    // Snackbar Crap
+    const [snackbarOpen, setSnackbarOpen] = useState(false)
+    const [snackbarText, setSnackbarText] = useState('')
+    const [snackbarSeverity, setSnackbarSeverity] = useState(SEVERITY.ERROR)
+
+    let mounted = false
 
     var changeAuthTypeText = createNewAccount
         ? 'I already have an account'
         : 'I don\'t have an account yet'
 
+    const showSnackbar = (message, severity) => {
+        if (mounted) { // Without this if, we were updating the component when it wasn't being rendered any more, because we went into the app. This prevents that.
+            setSnackbarText(message)
+            setSnackbarSeverity(severity)
+            setSnackbarOpen(true)
+        }
+    }
+
+    const signInClicked = () => {
+        tryLoginOrRegister(email, password, createNewAccount ? passwordConfirm : undefined)
+        .then((result) => {
+            mounted = false
+            props.setIsLoggedIn(true)
+        })
+        .catch((error) => {
+            showSnackbar(error.msg, error.severity)
+        })
+    }
+
     return (
-        <div>
-            <Typography variant='h2' component='h1' align='center' color='textPrimary' style={{ padding: 25 }}>Welcome to Axכess:</Typography>
-            <Container maxWidth='xs'>
-                <Card style={{ marginTop: 150, padding: 10 }}>
-                    <Typography variant='h5' component='h2' className={classes.textCenter}>Continue with email:</Typography>
-                    <form className={classes.authForm}>
-                        <TextField required
-                            label='Email'
-                            onChange={({ target: { value } }) => setEmail(value)}/>
-                        <TextField required
-                            label='Password'
-                            type='password'
-                            onChange={({ target: { value } }) => setPassword(value)}/>
-                        {
-                            createNewAccount
-                                ? <TextField required
-                                    label='Confirm password'
-                                    type='password'
-                                    onChange={({ target: { value } }) => setPasswordConfirm(value)}/>
-                                : undefined
-                        }
-                        <Button style={{ margin: 5 }} variant='contained' onClick={() => authWithEmail(email, password, createNewAccount ? passwordConfirm : undefined)}>{loginButtonText}</Button>
-                        <Button size='small' style={{textDecorationLine: 'underline'}} onClick={() => setCreateNewAccount(!createNewAccount)}>{changeAuthTypeText}</Button>
-                    </form>
-                </Card>
-            </Container>
-        </div>
+        <Container maxWidth='xs'>
+            <Card className={classes.authFormContainer}>
+                <Typography variant="h5" component="h2" className={classes.textCenter}>Continue with email:</Typography>
+                <form className={classes.authForm}>
+                    <TextField required
+                        label='Email'
+                        onChange={({ target: { value } }) => setEmail(value)}/>
+                    <TextField required
+                        label='Password'
+                        type='password'
+                        onChange={({ target: { value } }) => setPassword(value)}/>
+                    {
+                        createNewAccount
+                            ? <TextField required
+                                label='Confirm password'
+                                type='password'
+                                onChange={({ target: { value } }) => setPasswordConfirm(value)}/>
+                            : undefined
+                    }
+                    <Button style={{margin: 5 }} variant='contained' onClick={signInClicked}>{createNewAccount ? "Register" : "Log In"}</Button>
+                    <Button size="small" style={{textDecorationLine: 'underline'}} onClick={() => setCreateNewAccount(!createNewAccount)}>{changeAuthTypeText}</Button>
+                </form>
+            </Card>
+            <SnackbarManager open={snackbarOpen} text={snackbarText} severity={snackbarSeverity} setOpen={setSnackbarOpen}/>
+        </Container>
     )
 }
