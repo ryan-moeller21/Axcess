@@ -1,16 +1,16 @@
 import React from 'react'
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
-import { Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        
-    }
-}));
 
-function PwdBrowser(props) {
-    const classes = useStyles();
+    }
+}))
+
+function PwdBrowser (props) {
+    const classes = useStyles()
 
     return (
         <div hidden={props.index !== props.value}>
@@ -18,7 +18,7 @@ function PwdBrowser(props) {
                 Password Browser
             </Typography>
         </div>
-    );
+    )
 }
 
 PwdBrowser.propTypes = {
@@ -26,4 +26,4 @@ PwdBrowser.propTypes = {
     value: PropTypes.string
 }
 
-export default PwdBrowser;
+export default PwdBrowser

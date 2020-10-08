@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Snackbar } from '@material-ui/core'
 import MuiAlert from '@material-ui/lab/Alert'
 
@@ -10,17 +11,16 @@ export const SEVERITY = {
     ERROR: 'error'
 }
 
-export default function SnackbarManager(props) {
-
+export default function SnackbarManager (props) {
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
-            return;
+            return
         }
-        props.setOpen(false);
-    };
+        props.setOpen(false)
+    }
 
     const Alert = (props) => {
-        return <MuiAlert elevation={6} variant="filled" onClose={handleClose} {...props} />;
+        return <MuiAlert elevation={6} variant="filled" onClose={handleClose} {...props} />
     }
 
     return (
@@ -30,4 +30,11 @@ export default function SnackbarManager(props) {
             </Alert>
         </Snackbar>
     )
+}
+
+SnackbarManager.PropTypes = {
+    open: PropTypes.bool.isRequired,
+    severity: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+    setOpen: PropTypes.func.isRequired
 }

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
 import { TextField, Container, Button, Card, Typography } from '@material-ui/core'
 import { tryLoginOrRegister } from '../services/AuthService'
@@ -12,11 +13,11 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignContent: 'center',
         flexDirection: 'column',
-        padding: 25,
+        padding: 25
     }
 }))
 
-export default function LoginPage(props) {
+export default function LoginPage (props) {
     const classes = useStyles()
 
     const [email, setEmail] = useState(undefined)
@@ -45,13 +46,13 @@ export default function LoginPage(props) {
 
     const signInClicked = () => {
         tryLoginOrRegister(email, password, createNewAccount ? passwordConfirm : undefined)
-        .then((result) => {
-            mounted = false
-            props.setIsLoggedIn(true)
-        })
-        .catch((error) => {
-            showSnackbar(error.msg, error.severity)
-        })
+            .then((result) => {
+                mounted = false
+                props.setIsLoggedIn(true)
+            })
+            .catch((error) => {
+                showSnackbar(error.msg, error.severity)
+            })
     }
 
     return (
@@ -74,11 +75,15 @@ export default function LoginPage(props) {
                                 onChange={({ target: { value } }) => setPasswordConfirm(value)}/>
                             : undefined
                     }
-                    <Button style={{margin: 5 }} variant='contained' onClick={signInClicked}>{createNewAccount ? "Register" : "Log In"}</Button>
-                    <Button size="small" style={{textDecorationLine: 'underline'}} onClick={() => setCreateNewAccount(!createNewAccount)}>{changeAuthTypeText}</Button>
+                    <Button style={{ margin: 5 }} variant='contained' onClick={signInClicked}>{createNewAccount ? 'Register' : 'Log In'}</Button>
+                    <Button size="small" style={{ textDecorationLine: 'underline' }} onClick={() => setCreateNewAccount(!createNewAccount)}>{changeAuthTypeText}</Button>
                 </form>
             </Card>
             <SnackbarManager open={snackbarOpen} text={snackbarText} severity={snackbarSeverity} setOpen={setSnackbarOpen}/>
         </Container>
     )
+}
+
+LoginPage.PropTypes = {
+    setIsLoggedIn: PropTypes.func.isRequired
 }
