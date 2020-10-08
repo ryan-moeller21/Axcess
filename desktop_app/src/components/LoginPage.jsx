@@ -2,10 +2,7 @@ import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { TextField, Container, Button, Card, Typography, Snackbar } from '@material-ui/core'
 import MuiAlert from '@material-ui/lab/Alert'
-import firebase from 'firebase'
-import bcrypt, { hash } from 'bcryptjs'
 import { tryLoginOrRegister } from '../services/AuthService'
-import { SEVERITY } from '../components/SnackbarManager.jsx'
 
 const useStyles = makeStyles((theme) => ({
     textCenter: {
@@ -32,10 +29,6 @@ export default function LoginPage(props) {
     const [createNewAccount, setCreateNewAccount] = useState(false)
     const [snackbarOpen, setSnackbarOpen] = useState(false)
     const [snackbarText, setSnackbarText] = useState('')
-
-    var loginButtonText = createNewAccount
-        ? 'Create account'
-        : 'Log in'
 
     var changeAuthTypeText = createNewAccount
         ? 'I already have an account'
