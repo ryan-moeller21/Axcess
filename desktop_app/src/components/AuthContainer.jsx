@@ -1,10 +1,19 @@
 import React from 'react'
-import firebase from 'firebase'
+import firebase from 'firebase/app'
+import 'firebase/firebase-auth'
 import MainPage from './MainPage.jsx'
 import LoginPage from './LoginPage.jsx'
 
-function AuthContainer() {
-    return firebase.auth().currentUser ? (<MainPage />) : (<LoginPage />)
-}
+export default class AuthContainer extends React.Component {
+    constructor() {
+        super()
+        this.state = { isLoggedIn: false }
+        firebase.auth().onAuthStateChanged((user) => {
+            this.setState({isLoggedIn: user ? true : false})
+        })
+    }
 
-export default AuthContainer
+    render() {
+        return this.state.isLoggedIn ? (<MainPage />) : (<LoginPage />)
+    }
+}

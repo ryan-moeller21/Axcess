@@ -4,7 +4,8 @@ import ReactDOM from 'react-dom'
 
 import AuthContainer from './components/AuthContainer.jsx'
 
-import * as firebase from 'firebase'
+import firebase from 'firebase/app'
+import 'firebase/firebase-auth'
 
 const firebaseConfig = {
   apiKey: "AIzaSyBxrwvzYRZKU3GbGX_5Ma3CFdb7_-yDE0o",
