@@ -65,11 +65,11 @@ function createNewUser(email, password, resolve, reject) {
                 })
             })
             .catch((err) => {
-                console.log(err)
                 reject({
                     msg: 'A user already exists with that email.',
                     severity: SEVERITY.ERROR
                 })
+                console.error(err)
             })
         })
     })
@@ -105,10 +105,11 @@ function signIn(email, password, resolve, reject) {
                         msg: 'Incorrect username/password specified.',
                         severity: SEVERITY.ERROR
                     })
+                    console.error(err)
                 })
             })
             .catch((error) => {
-                console.log(error)
+                console.error(error)
             })
         } else {
             reject({
@@ -122,6 +123,6 @@ function signIn(email, password, resolve, reject) {
             msg: 'Database error, try again later.',
             severity: SEVERITY.ERROR
         })
-        console.log(err)
+        console.error(err)
     })
 }
