@@ -1,17 +1,17 @@
 import React from 'react'
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
-import { Grid, Slider, Typography } from '@material-ui/core';
+import { Grid, Slider, Typography } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
     root: {
         textAlign: 'center'
     }
-}));
+}))
 
-function PwdGenerator(props) {
+function PwdGenerator (props) {
     const classes = useStyles()
-    return(
+    return (
         <div hidden={props.index !== props.value}>
             <Grid className={classes.root} container>
                 <Grid item xs={12}>
