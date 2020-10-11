@@ -18,7 +18,6 @@
         "react"
     ],
     "rules": {
-        "indent": ["warn", 4],
-        "react/prop-types": ["off"] // This is dumb, but eslint won't pick up PropTypes stuff properly. This is the fix for now...
+        "indent": ["warn", 4]
     }
 }

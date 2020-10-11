@@ -94,6 +94,7 @@
     "@material-ui/lab": "^4.0.0-alpha.56",
     "babel-loader": "^8.1.0",
     "bcryptjs": "^2.4.3",
+    "crypto-js": "^4.0.0",
     "electron-squirrel-startup": "^1.0.0",
     "firebase": "^7.22.0",
     "react": "^16.13.1",
