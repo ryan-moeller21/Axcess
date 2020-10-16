@@ -17,12 +17,14 @@ export function tryLoginOrRegister(email, password, passwordConfirmation = undef
                 msg: 'All required fields are not filled out.',
                 severity: SEVERITY.ERROR
             })
+            return
         }
         if (passwordConfirmation && passwordConfirmation != password) {
             reject({
                 msg: 'Passwords don\'t match.',
                 severity: SEVERITY.ERROR
             })
+            return
         }
         if (passwordConfirmation) {
             createNewUser(email, password, resolve, reject)
@@ -50,27 +52,25 @@ function createNewUser(email, password, resolve, reject) {
             if(err) throw err
 
             firebase.auth().createUserWithEmailAndPassword(email, hash)
-            .then(() => {
-                // This has to be done until after the user successfully registers. 
-                // If it occured before registration, then the salt would be overwritten in the database.
-                // This would cause the user to be unable to log in, as the entered password would be hashed with this new salt,
-                // which doesn't match the salt used during password generation.
-                const db = firebase.firestore()
-                db.collection('salts').doc(email).set({
-                    'salt': salt
+                .then(() => {
+                    // This has to be done until after the user successfully registers. 
+                    // If it occured before registration, then the salt would be overwritten in the database.
+                    // This would cause the user to be unable to log in, as the entered password would be hashed with this new salt,
+                    // which doesn't match the salt used during password generation.
+                    const db = firebase.firestore()
+                    db.collection('salts').doc(email).set({ salt })
+                    resolve({
+                        msg: 'User successfully registered.',
+                        severity: SEVERITY.SUCCESS
+                    })
                 })
-                resolve({
-                    msg: 'User successfully registered.',
-                    severity: SEVERITY.SUCCESS
+                .catch((err) => {
+                    reject({
+                        msg: 'A user already exists with that email.',
+                        severity: SEVERITY.ERROR
+                    })
+                    console.error(err)
                 })
-            })
-            .catch((err) => {
-                reject({
-                    msg: 'A user already exists with that email.',
-                    severity: SEVERITY.ERROR
-                })
-                console.error(err)
-            })
         })
     })
 }
@@ -87,42 +87,44 @@ function createNewUser(email, password, resolve, reject) {
 function signIn(email, password, resolve, reject) {
     const db = firebase.firestore()
     db.collection('salts').doc(email).get()
-    .then((result) => {
-        // The password should be guaranteed to not be undefined, but I would occasionally get an error from
-        // bcrypt complaining about the password being undefined... Not sure why, but this check prevents that.
-        if (password != undefined && result.data() != undefined) {
-            hash(password, result.data().salt)
-            .then((hashedPassword) => {
-                firebase.auth().signInWithEmailAndPassword(email, hashedPassword)
-                .then(() => {
-                    resolve({
-                        msg: 'User successfully signed in.',
-                        severity: SEVERITY.SUCCESS
+        .then((result) => {
+            // The password should be guaranteed to not be undefined, but I would occasionally get an error from
+            // bcrypt complaining about the password being undefined... Not sure why, but this check prevents that.
+            if (password != undefined && result.data() != undefined) {
+                hash(password, result.data().salt)
+                    .then((hashedPassword) => {
+                        firebase.auth().signInWithEmailAndPassword(email, hashedPassword)
+                            .then(() => {
+                                resolve({
+                                    msg: 'User successfully signed in.',
+                                    salt: result.data().salt,
+                                    key: hashedPassword,
+                                    severity: SEVERITY.SUCCESS
+                                })
+                            })
+                            .catch((err) => {
+                                reject({
+                                    msg: 'Incorrect username/password specified.',
+                                    severity: SEVERITY.ERROR
+                                })
+                                console.error(err)
+                            })
                     })
-                })
-                .catch((err) => {
-                    reject({
-                        msg: 'Incorrect username/password specified.',
-                        severity: SEVERITY.ERROR
+                    .catch((error) => {
+                        console.error(error)
                     })
-                    console.error(err)
+            } else {
+                reject({
+                    msg: 'We can\'t seem to find your account.',
+                    severity: SEVERITY.ERROR
                 })
-            })
-            .catch((error) => {
-                console.error(error)
-            })
-        } else {
+            }
+        })
+        .catch((err) => {
             reject({
-                msg: 'We can\'t seem to find your account.',
+                msg: 'Database error, try again later.',
                 severity: SEVERITY.ERROR
             })
-        }
-    })
-    .catch((err) => {
-        reject({
-            msg: 'Database error, try again later.',
-            severity: SEVERITY.ERROR
+            console.error(err)
         })
-        console.error(err)
-    })
 }

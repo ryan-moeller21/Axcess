@@ -32,7 +32,7 @@ export default function SnackbarManager (props) {
     )
 }
 
-SnackbarManager.PropTypes = {
+SnackbarManager.propTypes = {
     open: PropTypes.bool.isRequired,
     severity: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,
