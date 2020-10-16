@@ -63,6 +63,8 @@ export default function LoginPage (props) {
         tryLoginOrRegister(email, password, createNewAccount ? passwordConfirm : undefined)
             .then((result) => {
                 mounted = false
+                props.setEmail(email)
+                props.setKey(result.key)
                 props.setIsLoggedIn(true)
             })
             .catch((error) => {
@@ -101,6 +103,8 @@ export default function LoginPage (props) {
     )
 }
 
-LoginPage.PropTypes = {
-    setIsLoggedIn: PropTypes.func.isRequired
+LoginPage.propTypes = {
+    setIsLoggedIn: PropTypes.func.isRequired,
+    setEmail: PropTypes.func.isRequired,
+    setKey: PropTypes.func.isRequired
 }
