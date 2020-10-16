@@ -1,21 +1,36 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
-import { TextField, Container, Button, Card, Typography } from '@material-ui/core'
+import { TextField, Container, Button, Card, Typography, CardContent } from '@material-ui/core'
 import { tryLoginOrRegister } from '../services/AuthService'
 import SnackbarManager, { SEVERITY } from './SnackbarManager.jsx'
 
+
 const useStyles = makeStyles((theme) => ({
+   
     textCenter: {
-        textAlign: 'center'
+        textAlign: 'center',
+        backgroundColor: '#29a19c',
+        padding: 25,
+        color: '#27323a',
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        paddingTop: 25,
+        paddingLeft:25,
+        paddingRight: 25,
+        paddingBottom: 7
     },
     authForm: {
         display: 'flex',
-        alignContent: 'center',
         flexDirection: 'column',
-        padding: 25
+        padding: 25,
+        backgroundColor: '#29a19c',
+        borderBottomLeftRadius: 15,
+        borderBottomRightRadius: 15
     }
+
 }))
+
 
 export default function LoginPage (props) {
     const classes = useStyles()
@@ -55,10 +70,12 @@ export default function LoginPage (props) {
             })
     }
 
+    //TODO: Get backward c for name. Add logo?
     return (
-        <Container maxWidth='xs'>
-            <Card className={classes.authFormContainer}>
-                <Typography variant="h5" component="h2" className={classes.textCenter}>Continue with email:</Typography>
+        <Container style={{marginTop: '10vmin'}}  maxWidth='sm'>
+            <Card className={classes.authFormContainer} style={{ backgroundColor: "transparent" }} elevation='0'>
+              
+                <Typography variant="h4" component="h2" className={classes.textCenter}>Axcess</Typography>
                 <form className={classes.authForm}>
                     <TextField required
                         label='Email'
@@ -75,8 +92,8 @@ export default function LoginPage (props) {
                                 onChange={({ target: { value } }) => setPasswordConfirm(value)}/>
                             : undefined
                     }
-                    <Button style={{ margin: 5 }} variant='contained' onClick={signInClicked}>{createNewAccount ? 'Register' : 'Log In'}</Button>
-                    <Button size="small" style={{ textDecorationLine: 'underline' }} onClick={() => setCreateNewAccount(!createNewAccount)}>{changeAuthTypeText}</Button>
+                    <Button id="buttonHovers" classes={{ label: 'loginButton' }} style={{ marginTop: 25, marginBottom: 15 }}  variant='contained' onClick={signInClicked}>{createNewAccount ? 'Register' : 'Log In'}</Button>
+                    <Button id="textHover" size="small" style={{ textDecorationLine: 'underline', transitionDuration: '0.1s' }} onClick={() => setCreateNewAccount(!createNewAccount)}>{changeAuthTypeText}</Button>
                 </form>
             </Card>
             <SnackbarManager open={snackbarOpen} text={snackbarText} severity={snackbarSeverity} setOpen={setSnackbarOpen}/>

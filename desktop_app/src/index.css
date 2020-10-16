@@ -1,5 +1,19 @@
+/* */
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background-color: #43464B;
+  background-color: #435055;
   margin: 0;
 }
+
+#buttonHovers:hover{
+  background-color: #a3f7bf;
+  color: white;
+}
+
+#textHover:hover{
+  color: #a3f7bf;
+  background-color: transparent;
+  
+}
+
+/* */
