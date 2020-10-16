@@ -58,9 +58,7 @@ function createNewUser(email, password, resolve, reject) {
                     // This would cause the user to be unable to log in, as the entered password would be hashed with this new salt,
                     // which doesn't match the salt used during password generation.
                     const db = firebase.firestore()
-                    db.collection('salts').doc(email).set({
-                        'salt': salt
-                    })
+                    db.collection('salts').doc(email).set({ salt })
                     resolve({
                         msg: 'User successfully registered.',
                         severity: SEVERITY.SUCCESS

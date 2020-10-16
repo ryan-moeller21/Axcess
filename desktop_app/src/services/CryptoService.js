@@ -13,21 +13,26 @@ import CryptoJS from 'crypto-js'
 export function putAccount(userEmail, aesKey, accountURL, accountName, accountPassword) {
     const db = firebase.firestore()
 
-    db.collection('accounts').doc(userEmail).update({
-        url: accountURL,
+    let accounts = { }
+
+    // Have to do it this way, otherwise JavaScript wants to use accountURL as a string literal instead of the variable's value for the keyname :(
+    accounts[accountURL] = {
         accountName: accountName,
-        password: encrypt(aesKey, accountPassword)
-    })
+        password: encrypt(accountPassword, aesKey)
+    }
+
+    db.collection('accounts').doc(userEmail).set({ accounts }, {merge: true})
 }
 
 /*
     Gets all accounts belonging to a single user from Firestore.
 
     userEmail: string   - Email of the logged in user.
+
+    Return: Promise - A promise containing data about the user's accounts.
 */
 export function getAccounts(userEmail) {
     const db = firebase.firestore()
-
     return db.collection('accounts').doc(userEmail).get()
 }
 
@@ -41,11 +46,16 @@ export function getAccounts(userEmail) {
 export function getAccount(userEmail, aesKey, accountURL) {
     const db = firebase.firestore()
 
-    // I don't think this will work, since I'm returning inside a promise...
-    db.collection('accounts').doc(userEmail).get()
-        .then((result) => {
-            return decrypt(aesKey, result[accountURL])
-        })
+    return new Promise((resolve, reject) => {
+        db.collection('accounts').doc(userEmail).get()
+            .then((result) => {
+                resolve({password: decrypt(result.data()['accounts'][accountURL]['password'], aesKey)})
+            })
+            .catch((err) => {
+                console.log(err)
+                reject({ err })
+            })
+    })
 }
 
 /*

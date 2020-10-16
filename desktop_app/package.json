@@ -1,6 +1,6 @@
 {
-  "name": "my-test-app",
-  "productName": "my-test-app",
+  "name": "axcess",
+  "productName": "Axcess",
   "version": "1.0.0",
   "description": "My Electron application description",
   "main": ".webpack/main",
