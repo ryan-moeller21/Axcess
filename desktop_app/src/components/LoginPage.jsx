@@ -26,7 +26,11 @@ const useStyles = makeStyles((theme) => ({
         padding: 25,
         backgroundColor: '#29a19c',
         borderBottomLeftRadius: 15,
-        borderBottomRightRadius: 15
+        borderBottomRightRadius: 15,
+        color: '#27323a'
+    },
+    TextField: {
+        color: '#a3f7bf'
     }
 
 }))
@@ -72,12 +76,12 @@ export default function LoginPage (props) {
             })
     }
 
-    //TODO: Get backward c for name. Add logo?
+    //TODO: Add logo?
     return (
         <Container style={{marginTop: '10vmin'}}  maxWidth='sm'>
             <Card className={classes.authFormContainer} style={{ backgroundColor: "transparent" }} elevation='0'>
               
-                <Typography variant="h4" component="h2" className={classes.textCenter}>Axcess</Typography>
+                <Typography variant="h4" component="h2" className={classes.textCenter}>Axɔess</Typography>
                 <form className={classes.authForm}>
                     <TextField required
                         label='Email'

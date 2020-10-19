@@ -7,14 +7,14 @@ const useStyles = makeStyles((theme) => ({
     root: {
         padding: 0,
         width: '100%',
-        backgroundColor: '#D3D3D3'
+        backgroundColor: '#29a19c'
     },
     tabs: {
         margin: 0,
         width: '100%'
     },
     indicator: {
-        backgroundColor: '#0078d7'
+        backgroundColor: '#a3f7bf'
     }
 }))
 
