@@ -1,0 +1,14 @@
+{
+    "manifest_version" : 2,
+    "name" : "Axcess",
+    "version" : "1.0.0",
+    "description" : "Password Manager",
+    "icons" : {
+        "48" : "icons/lock-48.png"
+    },
+    "browser_action" : {
+        "default_title" : "Axcess",
+        "default_popup" : "index.html"
+    },
+    "permissions" : []
+}
