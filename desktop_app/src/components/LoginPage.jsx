@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
         paddingLeft:25,
         paddingRight: 25,
         paddingBottom: 7
+       
     },
     authForm: {
         display: 'flex',
@@ -29,9 +30,6 @@ const useStyles = makeStyles((theme) => ({
         borderBottomRightRadius: 15,
         color: '#27323a'
     },
-    TextField: {
-        color: '#a3f7bf'
-    }
 
 }))
 
