@@ -42,6 +42,7 @@ function AccountCard (props) {
                 image="/src/components/Cat.jpg"
                 title="Website Icon" /> */}
                 <CardContent>
+                    <img src={props.iconURL}/>
                     <Typography variant='body1'>
                         {props.website}
                     </Typography>
@@ -74,7 +75,8 @@ function AccountCard (props) {
 AccountCard.propTypes = {
     website: PropTypes.string.isRequired,
     accountName:PropTypes.string.isRequired,
-    password: PropTypes.string.isRequired
+    password: PropTypes.string.isRequired,
+    iconURL: PropTypes.string.isRequired
 }
 
 export default AccountCard

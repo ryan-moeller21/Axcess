@@ -1,11 +1,10 @@
 import React, { useState} from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
-import { Fab, Grid, Typography, Button } from '@material-ui/core'
+import { Fab, Grid, Button } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
-import { decrypt, putAccount, getAccount, getAccounts } from '../services/CryptoService.js'
+import { putAccount, getAccount, getAccounts } from '../services/CryptoService.js'
 import Account from './Account.js'
-import firebase from 'firebase'
 import AccountGrid from './AccountGrid.jsx'
 
 const useStyles = makeStyles((theme) => ({
@@ -21,9 +20,9 @@ function PwdBrowser (props) {
     const [accountData, setAccountData] = useState([])
     const classes = useStyles()
 
-    const sendAccountToDatabase = () => {
-        // TODO: Replace spoofed values with real stateful values
-        putAccount(props.email, props.aesKey, 'www.facebook.com', 'FacebookAccount', 'FacebookPassword')
+    // Google has some fancy tool available that gets the favicons for us!
+    const getFaviconURL = (domain) => {
+        return 'https://s2.googleusercontent.com/s2/favicons?domain=' + domain
     }
 
     const getAccountsFromDatabase = () => {
@@ -32,9 +31,8 @@ function PwdBrowser (props) {
                 var accounts = []
                 var data = result.data().accounts
                 for (var account in data) {
-                    accounts.push(new Account(account, data[account]["accountName"], data[account]["password"]))
+                    accounts.push(new Account(account, data[account]["accountName"], data[account]["password"], getFaviconURL(account)))
                 }
-                // console.log(accounts[0])
                 setAccountData(accounts)
             })
             .catch((error) => {
@@ -42,30 +40,17 @@ function PwdBrowser (props) {
             })
     }
 
-    const getAccountFromDatabase = () => {
-        getAccount(props.email, props.aesKey, 'www.google.com')
-            .then((result) => {
-                console.log(result)
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-    }
-
-    
-
     return (
         <div className={classes.root} hidden={props.index !== props.value}>
-            <Button variant="outlined" color="primary" onClick={sendAccountToDatabase}>
+            <Button variant="outlined" color="primary" onClick={() => putAccount(props.email, props.aesKey, 'www.facebook.com', 'FacebookAccount', 'FacebookPassword')}>
                 Send To Database!
             </Button>
-            <Button variant="outlined" color="secondary" onClick={getAccountFromDatabase}>
+            <Button variant="outlined" color="secondary" onClick={() => getAccount(props.email, props.aesKey, 'www.google.com')}>
                 Get From Database!
             </Button>
             <Button variant="outlined" color="default" onClick={getAccountsFromDatabase}>
                 Get From Database!
             </Button>
-
             <Grid container>
                 <Grid item xs={12} >
                     <Fab size='small' className={classes.addButton}>
