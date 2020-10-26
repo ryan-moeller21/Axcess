@@ -173,7 +173,7 @@ function PwdGenerator(props) {
                                 max={20}
                                 onChange={handleSlideChange}
                             />
-                            <Button variant="contained" color="primary" onClick={generateClicked}>Submit</Button>
+                            <Button variant="contained" color="primary" disabled={!state.upperCase&&!state.lowerCase&&!state.numbers&&!state.symbols} onClick={generateClicked}>Submit</Button>
                         </CardContent>
                     </Card>
                 </Grid>
