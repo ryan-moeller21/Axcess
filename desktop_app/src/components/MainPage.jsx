@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import TopNav from './TopNav.jsx'
 import GeneratorTab from './GeneratorTab.jsx'
 import BrowserTab from './BrowserTab.jsx'
+import SyncTab from './SyncTab.jsx'
 
 const useStyles = makeStyles((theme) => ({
     root: {
