@@ -1,0 +1,11 @@
+{ 
+    "BACKGROUND": "#181818",
+    "COLOR_PRIMARY": "#252526",
+    "FONT_PRIMARY": "#FFFFFF",
+    "FONT_SECONDARY": "#b3b3b3",
+    "ACCENT": "#56C1FF",
+    "RED_ACCENT": "#976362",
+    "YELLOW_ACCENT": "#B38F5B",
+    "GREEN_ACCENT": "#68E877",
+    "LIGHT_BLUE": "#A0C3FF"
+}

@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
 import { Fab, Grid, Button } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
-import { putAccount, getAccount, getAccounts } from '../services/CryptoService.js'
+import { putAccount, getAccount, getAccounts } from '../../services/CryptoService.js'
 import Account from './Account.js'
 import AccountGrid from './AccountGrid.jsx'
 
