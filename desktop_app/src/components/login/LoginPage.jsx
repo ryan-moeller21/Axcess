@@ -31,6 +31,13 @@ const useStyles = makeStyles((theme) => ({
     },
     input: {
         color: Colors['FONT_SECONDARY']
+    },
+    textField: {
+        margin: '10px'
+    },
+    notchedOutline: {
+        borderWidth: "1px",
+        borderColor: `${Colors['FONT_SECONDARY']} !important`
     }
 }))
 
@@ -81,20 +88,26 @@ export default function LoginPage (props) {
             <Card className={classes.authFormContainer} style={{ backgroundColor: "transparent" }} elevation={0}>
                 <Typography variant="h4" component="h2" className={classes.textCenter}>Axɔess</Typography>
                 <form className={classes.authForm}>
-                    <TextField required
+                    <TextField
                         label='Email'
+                        variant="outlined"
+                        className={classes.textField}
                         InputProps={{
-                            className: classes.input
+                            className: classes.input,
+                            classes: { notchedOutline: classes.notchedOutline }
                         }}
                         InputLabelProps={{
                             className: classes.input
                         }}
                         onChange={({ target: { value } }) => setEmail(value)}/>
-                    <TextField required
+                    <TextField
                         label='Password'
                         type='password'
+                        variant="outlined"
+                        className={classes.textField}
                         InputProps={{
-                            className: classes.input
+                            className: classes.input,
+                            classes: { notchedOutline: classes.notchedOutline }
                         }}
                         InputLabelProps={{
                             className: classes.input
@@ -102,11 +115,14 @@ export default function LoginPage (props) {
                         onChange={({ target: { value } }) => setPassword(value)}/>
                     {
                         createNewAccount
-                            ? <TextField required
+                            ? <TextField
                                 label='Confirm password'
                                 type='password'
+                                variant="outlined"
+                                className={classes.textField}
                                 InputProps={{
-                                    className: classes.input
+                                    className: classes.input,
+                                    classes: { notchedOutline: classes.notchedOutline }
                                 }}
                                 InputLabelProps={{
                                     className: classes.input

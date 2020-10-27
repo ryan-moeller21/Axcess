@@ -43,13 +43,15 @@ function PwdBrowser (props) {
 
     return (
         <div className={classes.root} hidden={props.index !== props.value}>
+            { /*
             <Button variant="outlined" color="primary" onClick={() => putAccount(props.email, props.aesKey, 'www.facebook.com', 'FacebookAccount', 'FacebookPassword')}>
                 Send To Database!
             </Button>
             <Button variant="outlined" color="secondary" onClick={() => getAccount(props.email, props.aesKey, 'www.google.com')}>
                 Get From Database!
             </Button>
-            <Button variant="outlined" color="default" onClick={getAccountsFromDatabase}>
+            */ }
+            <Button variant="outlined" color="primary" onClick={getAccountsFromDatabase}>
                 Get From Database!
             </Button>
             <Grid container>

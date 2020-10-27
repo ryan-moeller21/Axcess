@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 function TopNav (props) {
-    const [value, setValue] = useState('three')
+    const [value, setValue] = useState('two')
 
     const handleChange = (event, newValue) => {
         setValue(newValue)
@@ -35,7 +35,6 @@ function TopNav (props) {
                 <Tabs variant='fullWidth' className={classes.tabs} value={value} onChange={handleChange} classes={{ indicator: classes.indicator }} indicatorColor="secondary">
                     <Tab value='one' label="Password Generator" />
                     <Tab value='two' label="Browse Accounts" />
-                    <Tab value='three' label="Sync Passwords" />
                 </Tabs>
             </Toolbar>
         </React.Fragment>
