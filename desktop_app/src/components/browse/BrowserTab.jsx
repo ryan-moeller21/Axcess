@@ -6,6 +6,7 @@ import AddIcon from '@material-ui/icons/Add'
 import { putAccount, getAccount, getAccounts } from '../../services/CryptoService.js'
 import Account from './Account.js'
 import AccountGrid from './AccountGrid.jsx'
+import { decrypt } from '../../services/CryptoService.js'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -31,7 +32,7 @@ function PwdBrowser (props) {
                 var accounts = []
                 var data = result.data().accounts
                 for (var account in data) {
-                    accounts.push(new Account(account, data[account]["accountName"], data[account]["password"], getFaviconURL(account)))
+                    accounts.push(new Account(account, data[account]["accountName"], decrypt(data[account]["password"], props.aesKey), getFaviconURL(account)))
                 }
                 setAccountData(accounts)
             })

@@ -29,9 +29,6 @@ const useStyles = makeStyles((theme) => ({
         borderBottomLeftRadius: 15,
         borderBottomRightRadius: 15,
     },
-    root: {
-        background: "black"
-    },
     input: {
         color: Colors['FONT_SECONDARY']
     }
@@ -117,8 +114,8 @@ export default function LoginPage (props) {
                                 onChange={({ target: { value } }) => setPasswordConfirm(value)}/>
                             : undefined
                     }
-                    <Button id="buttonHovers" classes={{ label: 'loginButton' }} style={{ marginTop: 25, marginBottom: 15 }}  variant='contained' onClick={signInClicked}>{createNewAccount ? 'Register' : 'Log In'}</Button>
-                    <Button id="textHover" size="small" style={{ textDecorationLine: 'underline', transitionDuration: '0.1s' }} onClick={() => setCreateNewAccount(!createNewAccount)}>{changeAuthTypeText}</Button>
+                    <Button style={{ margin: 5 }} variant='contained' onClick={signInClicked}>{createNewAccount ? 'Register' : 'Log In'}</Button>
+                    <Button size="small" style={{ textDecorationLine: 'underline', color: Colors['FONT_SECONDARY'] }} onClick={() => setCreateNewAccount(!createNewAccount)}>{changeAuthTypeText}</Button>
                 </form>
             </Card>
             <SnackbarManager open={snackbarOpen} text={snackbarText} severity={snackbarSeverity} setOpen={setSnackbarOpen}/>
