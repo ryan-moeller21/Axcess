@@ -2,24 +2,26 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { Tab, Tabs, Toolbar } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import Colors from '../Colors.json'
 
 const useStyles = makeStyles((theme) => ({
     root: {
         padding: 0,
         width: '100%',
-        backgroundColor: '#29a19c'
+        backgroundColor: Colors['COLOR_PRIMARY']
     },
     tabs: {
         margin: 0,
-        width: '100%'
+        width: '100%',
+        color: Colors['FONT_PRIMARY']
     },
     indicator: {
-        backgroundColor: '#a3f7bf'
+        backgroundColor: Colors['RED_ACCENT']
     }
 }))
 
 function TopNav (props) {
-    const [value, setValue] = useState('three')
+    const [value, setValue] = useState('two')
 
     const handleChange = (event, newValue) => {
         setValue(newValue)
@@ -33,7 +35,6 @@ function TopNav (props) {
                 <Tabs variant='fullWidth' className={classes.tabs} value={value} onChange={handleChange} classes={{ indicator: classes.indicator }} indicatorColor="secondary">
                     <Tab value='one' label="Password Generator" />
                     <Tab value='two' label="Browse Accounts" />
-                    <Tab value='three' label="Sync Passwords" />
                 </Tabs>
             </Toolbar>
         </React.Fragment>

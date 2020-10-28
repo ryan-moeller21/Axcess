@@ -1,18 +1,18 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
-import { TextField, Container, Button, Card, Typography, CardContent } from '@material-ui/core'
-import { tryLoginOrRegister } from '../services/AuthService'
-import SnackbarManager, { SEVERITY } from './SnackbarManager.jsx'
+import { TextField, Container, Button, Card, Typography } from '@material-ui/core'
+import { tryLoginOrRegister } from '../../services/AuthService'
+import SnackbarManager, { SEVERITY } from '../top_level/SnackbarManager.jsx'
+import Colors from '../Colors.json'
 
 
 const useStyles = makeStyles((theme) => ({
    
     textCenter: {
         textAlign: 'center',
-        backgroundColor: '#29a19c',
         padding: 25,
-        color: '#27323a',
+        color: Colors['FONT_PRIMARY'],
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
         paddingTop: 25,
@@ -25,12 +25,20 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'column',
         padding: 25,
-        backgroundColor: '#29a19c',
+        backgroundColor: Colors['BACKGROUND'],
         borderBottomLeftRadius: 15,
         borderBottomRightRadius: 15,
-        color: '#27323a'
     },
-
+    input: {
+        color: Colors['FONT_SECONDARY']
+    },
+    textField: {
+        margin: '10px'
+    },
+    notchedOutline: {
+        borderWidth: "1px",
+        borderColor: `${Colors['FONT_SECONDARY']} !important`
+    }
 }))
 
 
@@ -77,27 +85,53 @@ export default function LoginPage (props) {
     //TODO: Add logo?
     return (
         <Container style={{marginTop: '10vmin'}}  maxWidth='sm'>
-            <Card className={classes.authFormContainer} style={{ backgroundColor: "transparent" }} elevation='0'>
-              
+            <Card className={classes.authFormContainer} style={{ backgroundColor: "transparent" }} elevation={0}>
                 <Typography variant="h4" component="h2" className={classes.textCenter}>Axɔess</Typography>
                 <form className={classes.authForm}>
-                    <TextField required
+                    <TextField
                         label='Email'
+                        variant="outlined"
+                        className={classes.textField}
+                        InputProps={{
+                            className: classes.input,
+                            classes: { notchedOutline: classes.notchedOutline }
+                        }}
+                        InputLabelProps={{
+                            className: classes.input
+                        }}
                         onChange={({ target: { value } }) => setEmail(value)}/>
-                    <TextField required
+                    <TextField
                         label='Password'
                         type='password'
+                        variant="outlined"
+                        className={classes.textField}
+                        InputProps={{
+                            className: classes.input,
+                            classes: { notchedOutline: classes.notchedOutline }
+                        }}
+                        InputLabelProps={{
+                            className: classes.input
+                        }}
                         onChange={({ target: { value } }) => setPassword(value)}/>
                     {
                         createNewAccount
-                            ? <TextField required
+                            ? <TextField
                                 label='Confirm password'
                                 type='password'
+                                variant="outlined"
+                                className={classes.textField}
+                                InputProps={{
+                                    className: classes.input,
+                                    classes: { notchedOutline: classes.notchedOutline }
+                                }}
+                                InputLabelProps={{
+                                    className: classes.input
+                                }}
                                 onChange={({ target: { value } }) => setPasswordConfirm(value)}/>
                             : undefined
                     }
-                    <Button id="buttonHovers" classes={{ label: 'loginButton' }} style={{ marginTop: 25, marginBottom: 15 }}  variant='contained' onClick={signInClicked}>{createNewAccount ? 'Register' : 'Log In'}</Button>
-                    <Button id="textHover" size="small" style={{ textDecorationLine: 'underline', transitionDuration: '0.1s' }} onClick={() => setCreateNewAccount(!createNewAccount)}>{changeAuthTypeText}</Button>
+                    <Button style={{ margin: 5 }} variant='contained' onClick={signInClicked}>{createNewAccount ? 'Register' : 'Log In'}</Button>
+                    <Button size="small" style={{ textDecorationLine: 'underline', color: Colors['FONT_SECONDARY'] }} onClick={() => setCreateNewAccount(!createNewAccount)}>{changeAuthTypeText}</Button>
                 </form>
             </Card>
             <SnackbarManager open={snackbarOpen} text={snackbarText} severity={snackbarSeverity} setOpen={setSnackbarOpen}/>

@@ -1,16 +1,8 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { makeStyles } from '@material-ui/core/styles'
 import TopNav from './TopNav.jsx'
-import GeneratorTab from './GeneratorTab.jsx'
-import BrowserTab from './BrowserTab.jsx'
-import SyncTab from './SyncTab.jsx'
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-
-    }
-}))
+import GeneratorTab from '../generator/GeneratorTab.jsx'
+import BrowserTab from '../browse/BrowserTab.jsx'
 
 // Enum for page navigation
 const PAGES = {
