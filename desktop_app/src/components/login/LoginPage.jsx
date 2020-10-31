@@ -7,7 +7,7 @@ import SnackbarManager, { SEVERITY } from '../top_level/SnackbarManager.jsx'
 import Colors from '../Colors.json'
 
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
    
     textCenter: {
         textAlign: 'center',
@@ -73,7 +73,6 @@ export default function LoginPage (props) {
         tryLoginOrRegister(email, password, createNewAccount ? passwordConfirm : undefined)
             .then((result) => {
                 mounted = false
-                props.setEmail(email)
                 props.setKey(result.key)
                 props.setIsLoggedIn(true)
             })
@@ -141,6 +140,5 @@ export default function LoginPage (props) {
 
 LoginPage.propTypes = {
     setIsLoggedIn: PropTypes.func.isRequired,
-    setEmail: PropTypes.func.isRequired,
     setKey: PropTypes.func.isRequired
 }

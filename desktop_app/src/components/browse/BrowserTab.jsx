@@ -3,12 +3,15 @@ import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
 import { Fab, Grid, Button } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
-import { putAccount, getAccount, getAccounts } from '../../services/CryptoService.js'
+import { getAccounts } from '../../services/CryptoService.js'
 import Account from './Account.js'
 import AccountGrid from './AccountGrid.jsx'
 import { decrypt } from '../../services/CryptoService.js'
+import SearchView from './SearchView.jsx'
+import firebase from 'firebase/app'
+import 'firebase/auth'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     root: {
         
     },
@@ -18,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 function PwdBrowser (props) {
+    const user = firebase.auth().currentUser
     const [accountData, setAccountData] = useState([])
     const classes = useStyles()
 
@@ -27,7 +31,7 @@ function PwdBrowser (props) {
     }
 
     const getAccountsFromDatabase = () => {
-        getAccounts(props.email)
+        getAccounts(user.email)
             .then((result) => {
                 var accounts = []
                 var data = result.data().accounts
@@ -44,13 +48,14 @@ function PwdBrowser (props) {
     return (
         <div className={classes.root} hidden={props.index !== props.value}>
             { /*
-            <Button variant="outlined" color="primary" onClick={() => putAccount(props.email, props.aesKey, 'www.facebook.com', 'FacebookAccount', 'FacebookPassword')}>
+            <Button variant="outlined" color="primary" onClick={() => putAccount(user.email, props.aesKey, 'www.facebook.com', 'FacebookAccount', 'FacebookPassword')}>
                 Send To Database!
             </Button>
-            <Button variant="outlined" color="secondary" onClick={() => getAccount(props.email, props.aesKey, 'www.google.com')}>
+            <Button variant="outlined" color="secondary" onClick={() => getAccount(user.email, props.aesKey, 'www.google.com')}>
                 Get From Database!
             </Button>
             */ }
+            <SearchView onItemSelect={item => console.log(`Clicked: ${item}`)}/>
             <Button variant="outlined" color="primary" onClick={getAccountsFromDatabase}>
                 Get From Database!
             </Button>
@@ -73,7 +78,6 @@ function PwdBrowser (props) {
 PwdBrowser.propTypes = {
     index: PropTypes.string,
     value: PropTypes.string,
-    email: PropTypes.string.isRequired,
     aesKey: PropTypes.string.isRequired
 }
 
