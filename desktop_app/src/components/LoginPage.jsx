@@ -94,7 +94,7 @@ export default function LoginPage (props) {
                                 onChange={({ target: { value } }) => setPasswordConfirm(value)}/>
                             : undefined
                     }
-                    <Button id="buttonHovers" classes={{ label: 'loginButton' }} style={{ marginTop: 25, marginBottom: 15 }}  variant='contained' onClick={signInClicked}>{createNewAccount ? 'Register' : 'Log In'}</Button>
+                    <Button id="button" classes={{ label: 'loginButton' }} style={{ marginTop: 25, marginBottom: 15 }} variant='contained' onClick={signInClicked}>{createNewAccount ? 'Register' : 'Log In'}</Button>
                     <Button id="textHover" size="small" style={{ textDecorationLine: 'underline', transitionDuration: '0.1s' }} onClick={() => setCreateNewAccount(!createNewAccount)}>{changeAuthTypeText}</Button>
                 </form>
             </Card>

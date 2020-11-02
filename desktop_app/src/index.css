@@ -1,11 +1,16 @@
 /* */
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background-color: #435055;
+  background-color: #27323a;
   margin: 0;
 }
 
-#buttonHovers:hover{
+/* Login page login button */
+#button{
+  color: #27323a;
+  
+}
+#button:hover{
   background-color: #a3f7bf;
   color: white;
 }
@@ -16,4 +21,24 @@ body {
   
 }
 
-/* */
+#formLabel{
+  color: #eceff1;
+}
+
+h3{
+  text-align: center;
+  padding: 15px;
+  color: #eceff1;
+}
+
+.textfeild{
+  text-align: center;
+  color: #eceff1;
+  
+}
+
+/*435055-light grey 
+a3f7bf-green
+27323a-darker black
+29a19c-blue
+*/
