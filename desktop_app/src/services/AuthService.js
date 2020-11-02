@@ -1,6 +1,6 @@
 import firebase from 'firebase' // TODO: We should be using 'firebase/app', which is recommended for real builds. However, this causes firebase.firestore() to fail! Why??
 import 'firebase/firebase-auth'
-import { SEVERITY } from '../components/SnackbarManager.jsx'
+import { SEVERITY } from '../components/top_level/SnackbarManager.jsx'
 import bcrypt, { hash } from 'bcryptjs'
 
 /*

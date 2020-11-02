@@ -2,7 +2,7 @@ import './index.css'
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import AuthContainer from './components/AuthContainer.jsx'
+import AuthContainer from './components/top_level/AuthContainer.jsx'
 
 import firebase from 'firebase/app'
 import 'firebase/firebase-auth'
