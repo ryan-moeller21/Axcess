@@ -22,13 +22,12 @@ function MainPage (props) {
             <TopNav handleTabChange={handleTabChange} />
 
             <GeneratorTab value={value} index={PAGES.GENERATOR} />
-            <BrowserTab value={value} email={props.email} aesKey={props.aesKey} index={PAGES.BROWSER} />
+            <BrowserTab value={value} aesKey={props.aesKey} index={PAGES.BROWSER} />
         </React.Fragment>
     )
 }
 
 MainPage.propTypes = {
-    email: PropTypes.string.isRequired,
     aesKey: PropTypes.string.isRequired
 }
 

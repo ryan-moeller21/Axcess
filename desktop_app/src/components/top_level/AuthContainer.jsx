@@ -6,12 +6,11 @@ import LoginPage from '../login/LoginPage.jsx'
 
 export default function AuthContainer() {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
-    const [email, setEmail] = useState('')
     const [key, setKey] = useState('')
 
     firebase.auth().onAuthStateChanged((user) => {
         setIsLoggedIn(user ? true : false)
     })
 
-    return isLoggedIn ? (<MainPage email={email} aesKey={key}/>) : (<LoginPage setIsLoggedIn={setIsLoggedIn} setEmail={setEmail} setKey={setKey} />)
+    return isLoggedIn ? (<MainPage aesKey={key}/>) : (<LoginPage setIsLoggedIn={setIsLoggedIn} setKey={setKey} />)
 }

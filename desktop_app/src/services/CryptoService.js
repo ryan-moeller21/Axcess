@@ -58,6 +58,30 @@ export function getAccount(userEmail, aesKey, accountURL) {
     })
 }
 
+/**
+ * Search the current user's accounts by domain and name
+ * @param {String} searchTerm The term to search by
+ */
+export function searchAccounts (email, searchTerm, maxResults, callback) {
+    if (searchTerm.length == 0) return []
+
+    const lowerSearchTerm = searchTerm.toLowerCase()
+    getAccounts(email).then(snapshot => {
+        const accounts = snapshot.data().accounts
+        const matches = Object.keys(accounts)
+            .filter(key => {
+                const domainMatches = key.toLowerCase().includes(lowerSearchTerm)
+                const nameMatches = accounts[key].accountName.toLowerCase().includes(lowerSearchTerm)
+                return domainMatches || nameMatches
+            })
+            .map(key => ({...accounts[key], domain: key}))
+            .sort((a, b) => ('' + a.accountName.attr).localeCompare(b.attr)) // Alphabetize results
+            .slice(0, maxResults)
+
+        callback(matches)
+    })
+}
+
 /*
     Encrypts plaintext using AES-256 and a key.
 
