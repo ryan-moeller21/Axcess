@@ -11,23 +11,24 @@ const useStyles = makeStyles(() => ({
    
     textCenter: {
         textAlign: 'center',
-        padding: 25,
         color: Colors['FONT_PRIMARY'],
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
         paddingTop: 25,
         paddingLeft:25,
         paddingRight: 25,
-        paddingBottom: 7
+        paddingBottom: 7,
+        backgroundColor: Colors['BLUE_ACCENT']
        
     },
     authForm: {
         display: 'flex',
         flexDirection: 'column',
         padding: 25,
-        backgroundColor: Colors['BACKGROUND'],
+        backgroundColor: Colors['BLUE_ACCENT'],
         borderBottomLeftRadius: 15,
         borderBottomRightRadius: 15,
+        color: Colors['BACKGROUND']
     },
     input: {
         color: Colors['FONT_SECONDARY']
@@ -129,8 +130,8 @@ export default function LoginPage (props) {
                                 onChange={({ target: { value } }) => setPasswordConfirm(value)}/>
                             : undefined
                     }
-                    <Button style={{ margin: 5 }} variant='contained' onClick={signInClicked}>{createNewAccount ? 'Register' : 'Log In'}</Button>
-                    <Button size="small" style={{ textDecorationLine: 'underline', color: Colors['FONT_SECONDARY'] }} onClick={() => setCreateNewAccount(!createNewAccount)}>{changeAuthTypeText}</Button>
+                    <Button id="button" classes={{ label: 'loginButton' }} style={{ marginTop: 25, marginBottom: 15 }} variant='contained' onClick={signInClicked}>{createNewAccount ? 'Register' : 'Log In'}</Button>
+                    <Button id="textHover" size="small" style={{ textDecorationLine: 'underline', transitionDuration: '0.1s' }} onClick={() => setCreateNewAccount(!createNewAccount)}>{changeAuthTypeText}</Button>
                 </form>
             </Card>
             <SnackbarManager open={snackbarOpen} text={snackbarText} severity={snackbarSeverity} setOpen={setSnackbarOpen}/>
