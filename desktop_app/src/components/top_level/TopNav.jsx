@@ -8,15 +8,15 @@ const useStyles = makeStyles((theme) => ({
     root: {
         padding: 0,
         width: '100%',
-        backgroundColor: Colors['COLOR_PRIMARY']
+        backgroundColor: Colors['BLUE_ACCENT']
     },
     tabs: {
         margin: 0,
         width: '100%',
-        color: Colors['FONT_PRIMARY']
+        color: Colors['BACKGROUND']
     },
     indicator: {
-        backgroundColor: Colors['RED_ACCENT']
+        backgroundColor: Colors['COLOR_PRIMARY']
     }
 }))
 

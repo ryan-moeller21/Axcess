@@ -11,23 +11,24 @@ const useStyles = makeStyles(() => ({
    
     textCenter: {
         textAlign: 'center',
-        padding: 25,
         color: Colors['FONT_PRIMARY'],
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
         paddingTop: 25,
         paddingLeft:25,
         paddingRight: 25,
-        paddingBottom: 7
+        paddingBottom: 7,
+        backgroundColor: Colors['BLUE_ACCENT']
        
     },
     authForm: {
         display: 'flex',
         flexDirection: 'column',
         padding: 25,
-        backgroundColor: Colors['BACKGROUND'],
+        backgroundColor: Colors['BLUE_ACCENT'],
         borderBottomLeftRadius: 15,
         borderBottomRightRadius: 15,
+        color: Colors['BACKGROUND']
     },
     input: {
         color: Colors['FONT_SECONDARY']

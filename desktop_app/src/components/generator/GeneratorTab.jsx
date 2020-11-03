@@ -2,7 +2,7 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
 import { Checkbox, Container, FormControl, FormControlLabel, FormGroup, FormLabel, Slider, TextField, Typography } from '@material-ui/core';
-
+import Colors from '../Colors.json'
 
 const useStyles = makeStyles((theme) => ({
     /*root: {
@@ -11,25 +11,27 @@ const useStyles = makeStyles((theme) => ({
  
     },*/
     FormLabel: {
-        color: '#eceff1',
+        color: Colors['FONT_PRIMARY'],
         paddingBottom: 15,
         paddingLeft: 50,
         paddingTop: 30
 
     },
     FormGroup: {
-        color: '#eceff1',
+        color: Colors['FONT_PRIMARY'],
         paddingLeft: 80
     },
     slider: {
-        width: '200',
-        color: '#a3f7bf'
+        width: 300,
+        color: Colors['COLOR_PRIMARY'],
+        paddingBottom: 20,
+        marginLeft: '27%'
     },
     button: {
         width: 200,
         height: 30,
-        borderRadius: 7
-        
+        borderRadius: 7,
+        marginLeft: '41%'
     }
 
 }))
@@ -158,27 +160,27 @@ function PwdGenerator(props) {
             </Typography>
                 
             <FormControl  className={classes.FormControl} >
-                <FormLabel id="formLabel" className={classes.FormLabel} >Valid characters for new password</FormLabel>
+                <FormLabel id="formLabel" className={classes.FormLabel} variant='h5' >Valid characters for new password</FormLabel>
                 <FormGroup className={classes.FormGroup}>
                     {/*Checkbox grouping for selecting password paramters */}
                     <FormControlLabel
-                        control={<Checkbox checked={state.upperCase} onChange={handleCheckChange} name="uppercase" style={{color: '#a3f7bf'}} />}
+                        control={<Checkbox checked={state.upperCase} onChange={handleCheckChange} name="uppercase" style={{color: Colors['COLOR_PRIMARY']}} />}
                         label="Uppercase Letters"
                         
                                 
                     />
                     <FormControlLabel
-                        control={<Checkbox checked={state.lowerCase} onChange={handleCheckChange} name="lowercase" style={{color: '#a3f7bf'}} />}
+                        control={<Checkbox checked={state.lowerCase} onChange={handleCheckChange} name="lowercase" style={{color: Colors['COLOR_PRIMARY']}} />}
                         label="Lowercase Letters"
                                  
                     />
                     <FormControlLabel
-                        control={<Checkbox checked={state.numbers} onChange={handleCheckChange} name="numbers" style={{color: '#a3f7bf'}}/>}
+                        control={<Checkbox checked={state.numbers} onChange={handleCheckChange} name="numbers" style={{color: Colors['COLOR_PRIMARY']}}/>}
                         label="Numbers"
                                 
                     />
                     <FormControlLabel
-                        control={<Checkbox checked={state.symbols} onChange={handleCheckChange} name="symbols" style={{color: '#a3f7bf'}}/>}
+                        control={<Checkbox checked={state.symbols} onChange={handleCheckChange} name="symbols" style={{color: Colors['COLOR_PRIMARY']}}/>}
                         label="Symbols"
                                  
                     />
@@ -186,7 +188,7 @@ function PwdGenerator(props) {
             </FormControl>
               
             <Typography gutterBottom className={classes.FormLabel} style={{ textAlign: 'center'}} variant="h6">Password Length</Typography>
-            <Container maxWidth='sm' >
+            <Container maxWidth='sm'>
                 <Slider
                     className={classes.slider}
                     defaultValue={10}
@@ -203,7 +205,7 @@ function PwdGenerator(props) {
                 <TextField class="textfeild" id="website-input"  defaultValue="website.com"  />
             </form>
             
-            <Container>
+            <Container style={{marginTop: '25px'}}>
                 <button className={classes.button} id="button" style={{ alignContent:'center' }} variant="contained">Submit</button>
             </Container>
            
