@@ -1,39 +1,40 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
-import { Checkbox, Container, FormControl, FormControlLabel, FormGroup, FormLabel, Slider, TextField, Typography } from '@material-ui/core';
+import { Button, Checkbox, Container, FormControl, FormControlLabel, FormGroup, FormLabel, Slider, Typography } from '@material-ui/core';
 import Colors from '../Colors.json'
 
 const useStyles = makeStyles((theme) => ({
-    /*root: {
-        
-        color: '#eceff1',
- 
-    },*/
     FormLabel: {
         color: Colors['FONT_PRIMARY'],
         paddingBottom: 15,
-        paddingLeft: 50,
         paddingTop: 30
-
     },
     FormGroup: {
         color: Colors['FONT_PRIMARY'],
-        paddingLeft: 80
     },
     slider: {
         width: 300,
         color: Colors['COLOR_PRIMARY'],
-        paddingBottom: 20,
-        marginLeft: '27%'
+        paddingBottom: 20
     },
     button: {
         width: 200,
         height: 30,
-        borderRadius: 7,
-        marginLeft: '41%'
+        borderRadius: 7
+    },
+    centerContent: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    stickToBottom: {
+        position: "absolute",
+        bottom: 0
+    },
+    colorPrimary: {
+        colorPrimary: Colors['COLOR_PRIMARY']
     }
-
 }))
 
 /*
@@ -41,7 +42,10 @@ Generates a password given that matches the selected character options.
 Should be O(n) 
 */
 function PwdGenerator(props) {
-    const classes = useStyles();
+    const classes = useStyles()
+    const DEFAULT_PASSWORD_LENGTH = 10
+    const MIN_PASSWORD_LENGTH = 8
+    const MAX_PASSWORD_LENGTH = 32
 
     const [state, setState] = React.useState({
         upperCase: true,
@@ -49,7 +53,9 @@ function PwdGenerator(props) {
         numbers: true,
         symbols: false
     });
-    const [passwordLength, setPasswordLength] = React.useState(10);
+
+    const [passwordLength, setPasswordLength] = useState(DEFAULT_PASSWORD_LENGTH);
+    const [generatedPassword, setGeneratedPassword] = useState('')
     
     const handleCheckChange = (event) => {
         setState({...state, [event.target.name]: event.target.checked})
@@ -58,8 +64,6 @@ function PwdGenerator(props) {
         setPasswordLength(newValue);
     }
     const generateClicked = () => {
-        console.log("Generated with length" + passwordLength);
-
         var allowedChars="";
         var newPass="";
         var charSpace = 0;
@@ -72,38 +76,40 @@ function PwdGenerator(props) {
         If no character types are selected, reject the generation attempt
         TODO: Investigate not allowing the button to be pressed unless at least one state is true
         */
-        if(!state.upperCase&&!state.lowerCase&&!state.numbers&&!state.symbols){
+        if(!state.upperCase&&!state.lowerCase&&!state.numbers&&!state.symbols) {
             console.log("TODO: Handle rejection gracefully");
         }
-        else{
-            if(state.upperCase){
+        else {
+            if(state.upperCase) {
                 allowedChars = allowedChars.concat(upperChars);
                 charSpace += 26;
             }
-            if(state.lowerCase){
+            if(state.lowerCase) {
                 allowedChars = allowedChars.concat(lowerChars);
                 charSpace += 26;
             }
-            if(state.numbers){
+            if(state.numbers) {
                 allowedChars = allowedChars.concat(numChars);
                 charSpace += 10;
             }
-            if(state.symbols){
+            if(state.symbols) {
                 allowedChars = allowedChars.concat(symChars);
                 charSpace += 8;
 
             }
 
-            do{
+            do {
                 newPass = "";
                 for(var iterator = 0; iterator < passwordLength; iterator ++){
                     /*Select a random character from our allowed characters and append to the generating password. */
                     newPass = newPass.concat(allowedChars.charAt(Math.floor(Math.random() * charSpace)))
                 }
-            }while(!isGoodPassword(newPass))
+            } while(!isGoodPassword(newPass))
            
-            console.log(newPass);
-            console.log(isGoodPassword(newPass))
+            if (isGoodPassword)
+                setGeneratedPassword(newPass)
+            else
+                setGeneratedPassword('Bad Password')
         }
     }
 
@@ -127,22 +133,22 @@ function PwdGenerator(props) {
         for(iterator = 0; iterator < passwordLength; iterator ++){
             var current = newPassword.charAt(Math.floor(iterator))
             if(state.upperCase){
-                if(isUpperCase(current)){
+                if(isUpperCase(current)) {
                     upperFlag = true;
                 }
             }
             if(state.lowerCase){
-                if(isLowerCase(current)){
+                if(isLowerCase(current)) {
                     lowerFlag = true;
                 }
             }
             if(state.numbers){
-                if(isNumber(current)){
+                if(isNumber(current)) {
                     numFlag = true;
                 }
             }
             if(state.symbols){
-                if(isSymbol(current)){
+                if(isSymbol(current)) {
                     symFlag = true
                 }
             }
@@ -159,54 +165,52 @@ function PwdGenerator(props) {
                 Password Generator
             </Typography>
                 
-            <FormControl  className={classes.FormControl} >
-                <FormLabel id="formLabel" className={classes.FormLabel} variant='h5' >Valid characters for new password</FormLabel>
-                <FormGroup className={classes.FormGroup}>
-                    {/*Checkbox grouping for selecting password paramters */}
-                    <FormControlLabel
-                        control={<Checkbox checked={state.upperCase} onChange={handleCheckChange} name="uppercase" style={{color: Colors['COLOR_PRIMARY']}} />}
-                        label="Uppercase Letters"
-                        
-                                
-                    />
-                    <FormControlLabel
-                        control={<Checkbox checked={state.lowerCase} onChange={handleCheckChange} name="lowercase" style={{color: Colors['COLOR_PRIMARY']}} />}
-                        label="Lowercase Letters"
-                                 
-                    />
-                    <FormControlLabel
-                        control={<Checkbox checked={state.numbers} onChange={handleCheckChange} name="numbers" style={{color: Colors['COLOR_PRIMARY']}}/>}
-                        label="Numbers"
-                                
-                    />
-                    <FormControlLabel
-                        control={<Checkbox checked={state.symbols} onChange={handleCheckChange} name="symbols" style={{color: Colors['COLOR_PRIMARY']}}/>}
-                        label="Symbols"
-                                 
-                    />
-                </FormGroup>
-            </FormControl>
-              
+            <Container className={classes.centerContent}>
+                <FormControl className={classes.FormControl} >
+                    <FormLabel id="formLabel" className={classes.FormLabel} variant='h5' >Valid characters for new password</FormLabel>
+                    <FormGroup className={classes.FormGroup}>
+                        {/*Checkbox grouping for selecting password paramters */}
+                        <FormControlLabel
+                            control={<Checkbox className={classes.colorPrimary} checked={state.upperCase} onChange={handleCheckChange} name="upperCase" style={{color: Colors['COLOR_PRIMARY']}} />}
+                            label="Uppercase Letters"     
+                        />
+                        <FormControlLabel
+                            control={<Checkbox checked={state.lowerCase} onChange={handleCheckChange} name="lowerCase" style={{color: Colors['COLOR_PRIMARY']}} />}
+                            label="Lowercase Letters"     
+                        />
+                        <FormControlLabel
+                            control={<Checkbox checked={state.numbers} onChange={handleCheckChange} name="numbers" style={{color: Colors['COLOR_PRIMARY']}} />}
+                            label="Numbers"      
+                        />
+                        <FormControlLabel
+                            control={<Checkbox checked={state.symbols} onChange={handleCheckChange} name="symbols" style={{color: Colors['COLOR_PRIMARY']}} />}
+                            label="Symbols"             
+                        />
+                    </FormGroup>
+                </FormControl>
+            </Container>
+
             <Typography gutterBottom className={classes.FormLabel} style={{ textAlign: 'center'}} variant="h6">Password Length</Typography>
-            <Container maxWidth='sm'>
+            <Container className={ classes.centerContent } maxWidth='sm'>
                 <Slider
                     className={classes.slider}
-                    defaultValue={10}
+                    defaultValue={DEFAULT_PASSWORD_LENGTH}
                     valueLabelDisplay="auto"
                     step={1}
-                    min={8}
-                    max={20}
+                    min={MIN_PASSWORD_LENGTH}
+                    max={MAX_PASSWORD_LENGTH}
+                    onChange={handleSlideChange}
                 />
             </Container>
   
+            <Container className={classes.centerContent}>
+                <Typography variant='h4' style={{ color: Colors['FONT_PRIMARY'] }}>
+                    { generatedPassword }
+                </Typography>
+            </Container>
             
-            <form className={classes.root} noValidate autoComplete="off">
-                <TextField class="textfeild" id="password-input"  defaultValue="password" color="#eceff1"/>
-                <TextField class="textfeild" id="website-input"  defaultValue="website.com"  />
-            </form>
-            
-            <Container style={{marginTop: '25px'}}>
-                <button className={classes.button} id="button" style={{ alignContent:'center' }} variant="contained">Submit</button>
+            <Container className={classes.centerContent} style={{ position: 'relative', marginTop: '100px' }}>
+                <Button className={classes.stickToBottom} variant='contained' onClick={generateClicked}> Generate </Button>
             </Container>
            
         </div>
