@@ -171,19 +171,19 @@ function PwdGenerator(props) {
                     <FormGroup className={classes.FormGroup}>
                         {/*Checkbox grouping for selecting password paramters */}
                         <FormControlLabel
-                            control={<Checkbox className={classes.colorPrimary} checked={state.upperCase} onChange={handleCheckChange} name="upperCase" /* style={{color: Colors['COLOR_PRIMARY']}} */ />}
+                            control={<Checkbox className={classes.colorPrimary} checked={state.upperCase} onChange={handleCheckChange} name="upperCase" style={{color: Colors['COLOR_PRIMARY']}} />}
                             label="Uppercase Letters"     
                         />
                         <FormControlLabel
-                            control={<Checkbox checked={state.lowerCase} onChange={handleCheckChange} name="lowerCase" /* style={{color: Colors['COLOR_PRIMARY']}} */ />}
+                            control={<Checkbox checked={state.lowerCase} onChange={handleCheckChange} name="lowerCase" style={{color: Colors['COLOR_PRIMARY']}} />}
                             label="Lowercase Letters"     
                         />
                         <FormControlLabel
-                            control={<Checkbox checked={state.numbers} onChange={handleCheckChange} name="numbers" /* style={{color: Colors['COLOR_PRIMARY']}} *//>}
+                            control={<Checkbox checked={state.numbers} onChange={handleCheckChange} name="numbers" style={{color: Colors['COLOR_PRIMARY']}} />}
                             label="Numbers"      
                         />
                         <FormControlLabel
-                            control={<Checkbox checked={state.symbols} onChange={handleCheckChange} name="symbols" /* style={{color: Colors['COLOR_PRIMARY']}} *//>}
+                            control={<Checkbox checked={state.symbols} onChange={handleCheckChange} name="symbols" style={{color: Colors['COLOR_PRIMARY']}} />}
                             label="Symbols"             
                         />
                     </FormGroup>
