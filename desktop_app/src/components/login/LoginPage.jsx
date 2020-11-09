@@ -86,7 +86,7 @@ export default function LoginPage (props) {
     return (
         <Container style={{marginTop: '10vmin'}}  maxWidth='sm'>
             <Card className={classes.authFormContainer} style={{ backgroundColor: "transparent" }} elevation={0}>
-                <Typography variant="h4" component="h2" className={classes.textCenter}>Axɔess</Typography>
+                <Typography variant="h3" component="h2" className={classes.textCenter}>Axɔess</Typography>
                 <form className={classes.authForm}>
                     <TextField
                         label='Email'

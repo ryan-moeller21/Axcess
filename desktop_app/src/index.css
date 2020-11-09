@@ -1,21 +1,20 @@
 /* include these fonts and background colors in the entire app  */
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background-color: #181818;
+  background-color: #27323a;
   margin: 0;
 }
 
-/* Login button */
 #button {
-  color: #f7faff;
-  
+  color: #27323a;
+  background-color: #f7faff;
 }
 #button:hover {
-  background-color: #f7faff;
+  background-color: #a3f7bf;
 }
 
 #textHover:hover {
-  color: #b3b3b3;
+  color: #a3f7bf;
   background-color: transparent;
 }
 
