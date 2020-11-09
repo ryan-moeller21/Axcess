@@ -3,6 +3,8 @@ import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
 import { Grid, IconButton } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
+import SearchIcon from '@material-ui/icons/Search'
+import CloseIcon from '@material-ui/icons/Close'
 import { getAccounts } from '../../services/CryptoService.js'
 import Account from './Account.js'
 import AccountGrid from './AccountGrid.jsx'
@@ -17,14 +19,22 @@ const useStyles = makeStyles(() => ({
         
     },
     addButton: {
-        float: 'right'
+        float: 'right',
+        margin: 5
+    },
+    searchButton: {
+        float: 'right',
+        margin: 5
     }
 }))
 
 function PwdBrowser (props) {
     const user = firebase.auth().currentUser
+
     const [accountData, setAccountData] = useState(null)
     const [newAccount, setNewAccount] = useState(false)
+    const [showSearch, setShowSearch] = useState(false)
+
     const classes = useStyles()
 
     // Google has some fancy tool available that gets the favicons for us!
@@ -69,12 +79,24 @@ function PwdBrowser (props) {
                 Get From Database!
             </Button>
             */ }
-            <SearchView onItemSelect={item => console.log(`Clicked: ${item}`)}/>
+
+            { showSearch
+                ? <SearchView onItemSelect={item => console.log(`Clicked: ${item}`)} />
+                : null
+            }
+            <Button variant="outlined" color="primary" onClick={getAccountsFromDatabase}>
+                Get From Database!
+            </Button>
             <Grid container>
                 <Grid item xs={12} >
                     <IconButton className={classes.addButton} onClick={handleAddButton}>
                         <AddIcon />
-                    </IconButton>
+                  </IconButton>
+
+                    <Fab size='small' className={classes.searchButton} onClick={() => setShowSearch(!showSearch)}>
+                        { showSearch ? <CloseIcon /> : <SearchIcon /> }
+                    </Fab>
+
                 </Grid>
                 <Grid item xs={12}>
                     { accountData &&
