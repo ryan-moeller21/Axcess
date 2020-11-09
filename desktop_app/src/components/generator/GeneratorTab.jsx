@@ -29,8 +29,8 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center',
     },
     stickToBottom: {
-        position: "absolute",
-        bottom: 0
+        position: 'fixed',
+        bottom: 130
     },
     colorPrimary: {
         colorPrimary: Colors['COLOR_PRIMARY']
@@ -209,8 +209,8 @@ function PwdGenerator(props) {
                 </Typography>
             </Container>
             
-            <Container className={classes.centerContent} style={{ position: 'relative', marginTop: '100px' }}>
-                <Button className={classes.stickToBottom} variant='contained' onClick={generateClicked}> Generate </Button>
+            <Container className={classes.centerContent} style={{ position: 'relative', marginTop: '100px'}}>
+                <Button className={classes.stickToBottom} size="large" variant='contained' onClick={generateClicked}> Generate </Button>
             </Container>
            
         </div>
