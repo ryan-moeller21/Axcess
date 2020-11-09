@@ -1,7 +1,7 @@
 import React, { useState} from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
-import { Grid, IconButton } from '@material-ui/core'
+import { Grid, IconButton, Button, Fab } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import SearchIcon from '@material-ui/icons/Search'
 import CloseIcon from '@material-ui/icons/Close'
@@ -91,7 +91,7 @@ function PwdBrowser (props) {
                 <Grid item xs={12} >
                     <IconButton className={classes.addButton} onClick={handleAddButton}>
                         <AddIcon />
-                  </IconButton>
+                    </IconButton>
 
                     <Fab size='small' className={classes.searchButton} onClick={() => setShowSearch(!showSearch)}>
                         { showSearch ? <CloseIcon /> : <SearchIcon /> }
