@@ -1,13 +1,14 @@
 import React, { useState} from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
-import { Fab, Grid, Button } from '@material-ui/core'
+import { Grid, IconButton } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import SearchIcon from '@material-ui/icons/Search'
 import CloseIcon from '@material-ui/icons/Close'
 import { getAccounts } from '../../services/CryptoService.js'
 import Account from './Account.js'
 import AccountGrid from './AccountGrid.jsx'
+import AddModal from './AddModal.jsx'
 import { decrypt } from '../../services/CryptoService.js'
 import SearchView from './SearchView.jsx'
 import firebase from 'firebase/app'
@@ -29,8 +30,11 @@ const useStyles = makeStyles(() => ({
 
 function PwdBrowser (props) {
     const user = firebase.auth().currentUser
-    const [accountData, setAccountData] = useState([])
+
+    const [accountData, setAccountData] = useState(null)
+    const [newAccount, setNewAccount] = useState(false)
     const [showSearch, setShowSearch] = useState(false)
+
     const classes = useStyles()
 
     // Google has some fancy tool available that gets the favicons for us!
@@ -38,7 +42,11 @@ function PwdBrowser (props) {
         return 'https://s2.googleusercontent.com/s2/favicons?domain=' + domain
     }
 
-    const getAccountsFromDatabase = () => {
+    if (!accountData) {
+        getAccountsFromDatabase()
+    }
+
+    function getAccountsFromDatabase() {
         getAccounts(user.email)
             .then((result) => {
                 var accounts = []
@@ -52,6 +60,14 @@ function PwdBrowser (props) {
                 console.log(error)
             })
     }
+    const handleAddButton = () => {
+        setNewAccount(true)
+    }
+
+    function resetNewAccount() {
+        setNewAccount(false)
+        getAccountsFromDatabase()
+    }
 
     return (
         <div className={classes.root} hidden={props.index !== props.value}>
@@ -63,6 +79,7 @@ function PwdBrowser (props) {
                 Get From Database!
             </Button>
             */ }
+
             { showSearch
                 ? <SearchView onItemSelect={item => console.log(`Clicked: ${item}`)} />
                 : null
@@ -72,16 +89,23 @@ function PwdBrowser (props) {
             </Button>
             <Grid container>
                 <Grid item xs={12} >
-                    <Fab size='small' className={classes.addButton}>
+                    <IconButton className={classes.addButton} onClick={handleAddButton}>
                         <AddIcon />
-                    </Fab>
+                  </IconButton>
+
                     <Fab size='small' className={classes.searchButton} onClick={() => setShowSearch(!showSearch)}>
                         { showSearch ? <CloseIcon /> : <SearchIcon /> }
                     </Fab>
+
                 </Grid>
                 <Grid item xs={12}>
                     { accountData &&
                     <AccountGrid accountData={accountData} />
+                    }
+                </Grid>
+                <Grid item>
+                    {
+                        newAccount && <AddModal account={firebase.auth().currentUser} callback={resetNewAccount} aesKey={props.aesKey}/>
                     }
                 </Grid>
             </Grid>
