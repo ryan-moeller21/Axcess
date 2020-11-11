@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     },
     stickToBottom: {
         position: 'fixed',
-        bottom: 130
+        bottom: 50
     },
     colorPrimary: {
         colorPrimary: Colors['COLOR_PRIMARY']
