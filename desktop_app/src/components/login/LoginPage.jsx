@@ -18,14 +18,14 @@ const useStyles = makeStyles(() => ({
         paddingLeft:25,
         paddingRight: 25,
         paddingBottom: 7,
-        backgroundColor: Colors['BLUE_ACCENT']
+        backgroundColor: Colors['COLOR_PRIMARY']
        
     },
     authForm: {
         display: 'flex',
         flexDirection: 'column',
         padding: 25,
-        backgroundColor: Colors['BLUE_ACCENT'],
+        backgroundColor: Colors['COLOR_PRIMARY'],
         borderBottomLeftRadius: 15,
         borderBottomRightRadius: 15,
         color: Colors['BACKGROUND']
@@ -51,7 +51,7 @@ export default function LoginPage (props) {
     const [passwordConfirm, setPasswordConfirm] = useState(undefined)
     const [createNewAccount, setCreateNewAccount] = useState(false)
 
-    // Snackbar Crap
+    // Snackbar State
     const [snackbarOpen, setSnackbarOpen] = useState(false)
     const [snackbarText, setSnackbarText] = useState('')
     const [snackbarSeverity, setSnackbarSeverity] = useState(SEVERITY.ERROR)
@@ -141,5 +141,5 @@ export default function LoginPage (props) {
 
 LoginPage.propTypes = {
     setIsLoggedIn: PropTypes.func.isRequired,
-    setKey: PropTypes.func.isRequired
+    setKey: PropTypes.func.isRequired,
 }

@@ -1,18 +1,16 @@
 import React, { useState} from 'react'
-import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
-import { Grid, IconButton, Button, Fab } from '@material-ui/core'
-import AddIcon from '@material-ui/icons/Add'
-import SearchIcon from '@material-ui/icons/Search'
-import CloseIcon from '@material-ui/icons/Close'
-import { getAccounts } from '../../services/CryptoService.js'
 import Account from './Account.js'
 import AccountGrid from './AccountGrid.jsx'
 import AddModal from './AddModal.jsx'
-import { decrypt } from '../../services/CryptoService.js'
 import SearchView from './SearchView.jsx'
 import firebase from 'firebase/app'
-import 'firebase/auth'
+import { Grid, IconButton, Fab } from '@material-ui/core'
+import SearchIcon from '@material-ui/icons/Search'
+import CloseIcon from '@material-ui/icons/Close'
+import AddIcon from '@material-ui/icons/Add'
+import { getAccounts, decrypt } from '../../services/CryptoService.js'
+import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -51,9 +49,15 @@ function PwdBrowser (props) {
             .then((result) => {
                 var accounts = []
                 var data = result.data().accounts
-                for (var account in data) {
-                    accounts.push(new Account(account, data[account]["accountName"], decrypt(data[account]["password"], props.aesKey), getFaviconURL(account)))
+
+                // This implementation annoys me. Ideally I can call Object.keys(data).sort().values(), which should return all keys (website names), but that 
+                // returns an empty array iterator. In the meantime, this iteration over the indexes (which aren't empty, for some reason) works.
+                const sortedKeys = Object.keys(data).sort()
+                for (var index in sortedKeys) {
+                    var accountName = sortedKeys[index]
+                    accounts.push(new Account(accountName, data[accountName]["accountName"], decrypt(data[accountName]["password"], props.aesKey), getFaviconURL(accountName)))
                 }
+
                 setAccountData(accounts)
             })
             .catch((error) => {
@@ -71,22 +75,7 @@ function PwdBrowser (props) {
 
     return (
         <div className={classes.root} hidden={props.index !== props.value}>
-            { /*
-            <Button variant="outlined" color="primary" onClick={() => putAccount(user.email, props.aesKey, 'www.facebook.com', 'FacebookAccount', 'FacebookPassword')}>
-                Send To Database!
-            </Button>
-            <Button variant="outlined" color="secondary" onClick={() => getAccount(user.email, props.aesKey, 'www.google.com')}>
-                Get From Database!
-            </Button>
-            */ }
-
-            { showSearch
-                ? <SearchView onItemSelect={item => console.log(`Clicked: ${item}`)} />
-                : null
-            }
-            <Button variant="outlined" color="primary" onClick={getAccountsFromDatabase}>
-                Get From Database!
-            </Button>
+            { showSearch ? <SearchView onItemSelect={item => console.log(`Clicked: ${item}`)} /> : null }
             <Grid container>
                 <Grid item xs={12} >
                     <IconButton className={classes.addButton} onClick={handleAddButton}>
@@ -100,7 +89,7 @@ function PwdBrowser (props) {
                 </Grid>
                 <Grid item xs={12}>
                     { accountData &&
-                    <AccountGrid accountData={accountData} />
+                    <AccountGrid accountData={accountData} showSnackbar={props.showSnackbar}/>
                     }
                 </Grid>
                 <Grid item>
@@ -116,7 +105,8 @@ function PwdBrowser (props) {
 PwdBrowser.propTypes = {
     index: PropTypes.string,
     value: PropTypes.string,
-    aesKey: PropTypes.string.isRequired
+    aesKey: PropTypes.string.isRequired,
+    showSnackbar: PropTypes.func.isRequired
 }
 
 export default PwdBrowser

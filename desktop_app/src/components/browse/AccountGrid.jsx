@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
 function AccountGrid (props) {
     var idCounter = -1
     const allAccounts = props.accountData.map((index) => {
-        return <AccountCard key={idCounter++} accountName={index.accountName} password={index.password} website={index.website} iconURL={index.icon}/>
+        return <AccountCard key={idCounter++} accountName={index.accountName} password={index.password} website={index.website} iconURL={index.icon} showSnackbar={props.showSnackbar}/>
     })
 
     const classes = useStyles()
@@ -28,7 +28,8 @@ function AccountGrid (props) {
 
 AccountGrid.propTypes = {
     accountData: PropTypes.arrayOf(PropTypes.object).isRequired,
-    newAccountCallback: PropTypes.func
+    newAccountCallback: PropTypes.func,
+    showSnackbar: PropTypes.func.isRequired
 }
 
 export default AccountGrid
