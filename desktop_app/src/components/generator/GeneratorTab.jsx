@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
 import { Button, Checkbox, Container, FormControl, FormControlLabel, FormGroup, FormLabel, Slider, Typography } from '@material-ui/core'
 import Colors from '../Colors.json'
-import SnackbarManager, { SEVERITY } from '../top_level/SnackbarManager.jsx'
+import { SEVERITY } from '../top_level/SnackbarManager.jsx'
 
 const useStyles = makeStyles((theme) => ({
     FormLabel: {
