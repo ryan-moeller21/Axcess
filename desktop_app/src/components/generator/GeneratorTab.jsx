@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
-import { Button, Checkbox, Container, FormControl, FormControlLabel, FormGroup, FormLabel, Slider, Typography } from '@material-ui/core';
+import { Button, Checkbox, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, FormControlLabel, FormGroup, FormLabel, Slider, Typography } from '@material-ui/core';
 import Colors from '../Colors.json'
 
 const useStyles = makeStyles((theme) => ({
@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     slider: {
         width: 300,
         color: Colors['COLOR_PRIMARY'],
-        paddingBottom: 20
+        paddingBottom: 10
     },
     button: {
         width: 200,
@@ -28,10 +28,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    stickToBottom: {
-        position: 'fixed',
-        bottom: 130
-    },
+    
     colorPrimary: {
         colorPrimary: Colors['COLOR_PRIMARY']
     }
@@ -56,13 +53,19 @@ function PwdGenerator(props) {
 
     const [passwordLength, setPasswordLength] = useState(DEFAULT_PASSWORD_LENGTH);
     const [generatedPassword, setGeneratedPassword] = useState('')
-    
+    const [open, setOpen] = React.useState(false);
+
     const handleCheckChange = (event) => {
         setState({...state, [event.target.name]: event.target.checked})
     };
     const handleSlideChange = (event, newValue) => {
         setPasswordLength(newValue);
     }
+    const handleClose = () => {
+       
+        setOpen(false);
+    };
+      
     const generateClicked = () => {
         var allowedChars="";
         var newPass="";
@@ -202,15 +205,31 @@ function PwdGenerator(props) {
                     onChange={handleSlideChange}
                 />
             </Container>
-  
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">{"New Password"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        {generatedPassword}
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} size="large" variant='contained'>
+                        Copy
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            <Container className={classes.centerContent} style={{ position: 'relative', marginBottom:'75px'}}>
+                <Button className={classes.stickToBottom} size="large" variant='contained' disabled={!state.upperCase&&!state.lowerCase&&!state.numbers&&!state.symbols} onClick={generateClicked}> Generate </Button>
+            </Container>
             <Container className={classes.centerContent}>
                 <Typography variant='h4' style={{ color: Colors['FONT_PRIMARY'] }}>
                     { generatedPassword }
                 </Typography>
-            </Container>
-            
-            <Container className={classes.centerContent} style={{ position: 'relative', marginTop: '100px'}}>
-                <Button className={classes.stickToBottom} size="large" variant='contained' onClick={generateClicked}> Generate </Button>
             </Container>
            
         </div>
