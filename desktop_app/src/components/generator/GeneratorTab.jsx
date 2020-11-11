@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
-
 import { Button, Checkbox, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, FormControlLabel, FormGroup, FormLabel, Slider, Typography } from '@material-ui/core';
-
 import Colors from '../Colors.json'
 import SnackbarManager, { SEVERITY } from '../top_level/SnackbarManager.jsx'
 
@@ -99,8 +97,6 @@ function PwdGenerator(props) {
         charSpaceLen = allowedChars.length
     }
 
-    
-
     const handleCheckChange = (event) => {
         setState({...state, [event.target.name]: event.target.checked})
         updateCharacterSet()
@@ -110,9 +106,9 @@ function PwdGenerator(props) {
         setPasswordLength(newValue)
         if (newValue < RECOMMENDED_PASSWORD_LENGTH)
             props.showSnackbar('Warning: Using passwords under ' + RECOMMENDED_PASSWORD_LENGTH + ' characters is discouraged.', SEVERITY.WARNING)
+    }
 
     const handleClose = () => {
-       
         setOpen(false);
     };
 
