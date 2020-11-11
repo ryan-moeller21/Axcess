@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
         color: Colors['FONT_PRIMARY']
     },
     indicator: {
-        backgroundColor: Colors['BLUE_ACCENT']
+        backgroundColor: Colors['GREEN_ACCENT']
     }
 }))
 

@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     },
     slider: {
         width: 300,
-        color: Colors['BLUE_ACCENT'],
+        color: Colors['GREEN_ACCENT'],
         paddingBottom: 20
     },
     button: {
@@ -184,19 +184,19 @@ function PwdGenerator(props) {
                     <FormGroup className={classes.FormGroup}>
                         {/*Checkbox grouping for selecting password paramters */}
                         <FormControlLabel
-                            control={<Checkbox className={classes.colorPrimary} checked={state.upperCase} onChange={handleCheckChange} name="upperCase" style={{color: Colors['BLUE_ACCENT']}} />}
+                            control={<Checkbox className={classes.colorPrimary} checked={state.upperCase} onChange={handleCheckChange} name="upperCase" style={{color: Colors['GREEN_ACCENT']}} />}
                             label="Uppercase Letters"     
                         />
                         <FormControlLabel
-                            control={<Checkbox checked={state.lowerCase} onChange={handleCheckChange} name="lowerCase" style={{color: Colors['BLUE_ACCENT']}} />}
+                            control={<Checkbox checked={state.lowerCase} onChange={handleCheckChange} name="lowerCase" style={{color: Colors['GREEN_ACCENT']}} />}
                             label="Lowercase Letters"     
                         />
                         <FormControlLabel
-                            control={<Checkbox checked={state.numbers} onChange={handleCheckChange} name="numbers" style={{color: Colors['BLUE_ACCENT']}} />}
+                            control={<Checkbox checked={state.numbers} onChange={handleCheckChange} name="numbers" style={{color: Colors['GREEN_ACCENT']}} />}
                             label="Numbers"      
                         />
                         <FormControlLabel
-                            control={<Checkbox checked={state.symbols} onChange={handleCheckChange} name="symbols" style={{color: Colors['BLUE_ACCENT']}} />}
+                            control={<Checkbox checked={state.symbols} onChange={handleCheckChange} name="symbols" style={{color: Colors['GREEN_ACCENT']}} />}
                             label="Symbols"             
                         />
                     </FormGroup>

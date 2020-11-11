@@ -14,6 +14,10 @@ body {
   background-color: #f7faff;
 }
 
+#textHover {
+  color: #b3b3b3;
+}
+
 #textHover:hover {
   color: #FFFFFF;
   background-color: transparent;
