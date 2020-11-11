@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
-import { Button, Checkbox, Container, FormControl, FormControlLabel, FormGroup, FormLabel, Slider, Typography } from '@material-ui/core';
+import { Button, Checkbox, Container, FormControl, FormControlLabel, FormGroup, FormLabel, Slider, Typography } from '@material-ui/core'
 import Colors from '../Colors.json'
+import SnackbarManager, { SEVERITY } from '../top_level/SnackbarManager.jsx'
 
 const useStyles = makeStyles((theme) => ({
     FormLabel: {
@@ -15,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     },
     slider: {
         width: 300,
-        color: Colors['COLOR_PRIMARY'],
+        color: Colors['GREEN_ACCENT'],
         paddingBottom: 20
     },
     button: {
@@ -43,69 +44,79 @@ Should be O(n)
 */
 function PwdGenerator(props) {
     const classes = useStyles()
-    const DEFAULT_PASSWORD_LENGTH = 10
+
+    // Password Slider Constants
+    const DEFAULT_PASSWORD_LENGTH = 18
     const MIN_PASSWORD_LENGTH = 8
     const MAX_PASSWORD_LENGTH = 32
+    const RECOMMENDED_PASSWORD_LENGTH = 15
+
+    // Password Generation Constants
+    const upperChars="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    const lowerChars="abcdefghijklmnopqrstuvwxyz"
+    const numericalChars="0123456789"
+    const symChars="!@#$%^&*()_+-={[}];:|?.>,<~"
+
+    // Password State
+    const [passwordLength, setPasswordLength] = useState(DEFAULT_PASSWORD_LENGTH)
+    const [generatedPassword, setGeneratedPassword] = useState('')
+
+    // Password Generation Parameters
+    var allowedChars = ''
+    var charSpaceLen = 0
 
     const [state, setState] = React.useState({
         upperCase: true,
         lowerCase: true,
         numbers: true,
         symbols: false
-    });
+    })
 
-    const [passwordLength, setPasswordLength] = useState(DEFAULT_PASSWORD_LENGTH);
-    const [generatedPassword, setGeneratedPassword] = useState('')
-    
+    const updateCharacterSet = () => {
+        var tempCharSet = ''
+
+        if(state.upperCase) {
+            tempCharSet = tempCharSet.concat(upperChars)
+        }
+        if(state.lowerCase) {
+            tempCharSet = tempCharSet.concat(lowerChars)
+        }
+        if(state.numbers) {
+            tempCharSet = tempCharSet.concat(numericalChars)
+        }
+        if(state.symbols) {
+            tempCharSet = tempCharSet.concat(symChars)
+        }
+
+        allowedChars = tempCharSet
+        charSpaceLen = allowedChars.length
+    }
+
     const handleCheckChange = (event) => {
         setState({...state, [event.target.name]: event.target.checked})
-    };
-    const handleSlideChange = (event, newValue) => {
-        setPasswordLength(newValue);
+        updateCharacterSet()
     }
-    const generateClicked = () => {
-        var allowedChars="";
-        var newPass="";
-        var charSpace = 0;
-        const upperChars="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        const lowerChars="abcdefghijklmnopqrstuvwxyz";
-        const numChars="0123456789";
-        const symChars="!@#$%^&*";
 
-        /*
-        If no character types are selected, reject the generation attempt
-        TODO: Investigate not allowing the button to be pressed unless at least one state is true
-        */
+    const handleSlideChange = (event, newValue) => {
+        setPasswordLength(newValue)
+        if (newValue < RECOMMENDED_PASSWORD_LENGTH)
+            props.showSnackbar('Warning: Using passwords under ' + RECOMMENDED_PASSWORD_LENGTH + ' characters is discouraged.', SEVERITY.WARNING)
+    }
+
+    const generateClicked = () => {
         if(!state.upperCase&&!state.lowerCase&&!state.numbers&&!state.symbols) {
-            console.log("TODO: Handle rejection gracefully");
+            props.showSnackbar('Please select a set of characters.', SEVERITY.ERROR)
         }
         else {
-            if(state.upperCase) {
-                allowedChars = allowedChars.concat(upperChars);
-                charSpace += 26;
-            }
-            if(state.lowerCase) {
-                allowedChars = allowedChars.concat(lowerChars);
-                charSpace += 26;
-            }
-            if(state.numbers) {
-                allowedChars = allowedChars.concat(numChars);
-                charSpace += 10;
-            }
-            if(state.symbols) {
-                allowedChars = allowedChars.concat(symChars);
-                charSpace += 8;
-
-            }
-
+            var newPass = ''
             do {
-                newPass = "";
-                for(var iterator = 0; iterator < passwordLength; iterator ++){
+                newPass = ''
+                for(var iterator = 0; iterator < passwordLength; iterator ++) {
                     /*Select a random character from our allowed characters and append to the generating password. */
-                    newPass = newPass.concat(allowedChars.charAt(Math.floor(Math.random() * charSpace)))
+                    newPass = newPass.concat(allowedChars.charAt(Math.floor(Math.random() * charSpaceLen)))
                 }
             } while(!isGoodPassword(newPass))
-           
+
             if (isGoodPassword)
                 setGeneratedPassword(newPass)
             else
@@ -124,27 +135,27 @@ function PwdGenerator(props) {
     Checks if a given password includes all of the currently selected password criteria.
     This is needed since the generation may or may not include all of the selected character types due to randomness.
     */
-    function isGoodPassword(newPassword){
-        var upperFlag = !state.upperCase;
-        var lowerFlag = !state.lowerCase;
-        var numFlag = !state.numbers;
-        var symFlag = !state.symbols;
-        var iterator;
+    function isGoodPassword(newPassword) {
+        var upperFlag = !state.upperCase
+        var lowerFlag = !state.lowerCase
+        var numFlag = !state.numbers
+        var symFlag = !state.symbols
+        var iterator
         for(iterator = 0; iterator < passwordLength; iterator ++){
             var current = newPassword.charAt(Math.floor(iterator))
             if(state.upperCase){
                 if(isUpperCase(current)) {
-                    upperFlag = true;
+                    upperFlag = true
                 }
             }
             if(state.lowerCase){
                 if(isLowerCase(current)) {
-                    lowerFlag = true;
+                    lowerFlag = true
                 }
             }
             if(state.numbers){
                 if(isNumber(current)) {
-                    numFlag = true;
+                    numFlag = true
                 }
             }
             if(state.symbols){
@@ -154,9 +165,11 @@ function PwdGenerator(props) {
             }
         }
             
-        return upperFlag && lowerFlag && numFlag && symFlag;
+        return upperFlag && lowerFlag && numFlag && symFlag
     }
     
+    // Check the currently selected buttons to update password generation settings.
+    updateCharacterSet()
 
     return(
         <div hidden={props.index !== props.value}>
@@ -171,19 +184,19 @@ function PwdGenerator(props) {
                     <FormGroup className={classes.FormGroup}>
                         {/*Checkbox grouping for selecting password paramters */}
                         <FormControlLabel
-                            control={<Checkbox className={classes.colorPrimary} checked={state.upperCase} onChange={handleCheckChange} name="upperCase" style={{color: Colors['COLOR_PRIMARY']}} />}
+                            control={<Checkbox className={classes.colorPrimary} checked={state.upperCase} onChange={handleCheckChange} name="upperCase" style={{color: Colors['GREEN_ACCENT']}} />}
                             label="Uppercase Letters"     
                         />
                         <FormControlLabel
-                            control={<Checkbox checked={state.lowerCase} onChange={handleCheckChange} name="lowerCase" style={{color: Colors['COLOR_PRIMARY']}} />}
+                            control={<Checkbox checked={state.lowerCase} onChange={handleCheckChange} name="lowerCase" style={{color: Colors['GREEN_ACCENT']}} />}
                             label="Lowercase Letters"     
                         />
                         <FormControlLabel
-                            control={<Checkbox checked={state.numbers} onChange={handleCheckChange} name="numbers" style={{color: Colors['COLOR_PRIMARY']}} />}
+                            control={<Checkbox checked={state.numbers} onChange={handleCheckChange} name="numbers" style={{color: Colors['GREEN_ACCENT']}} />}
                             label="Numbers"      
                         />
                         <FormControlLabel
-                            control={<Checkbox checked={state.symbols} onChange={handleCheckChange} name="symbols" style={{color: Colors['COLOR_PRIMARY']}} />}
+                            control={<Checkbox checked={state.symbols} onChange={handleCheckChange} name="symbols" style={{color: Colors['GREEN_ACCENT']}} />}
                             label="Symbols"             
                         />
                     </FormGroup>
@@ -212,14 +225,14 @@ function PwdGenerator(props) {
             <Container className={classes.centerContent} style={{ position: 'relative', marginTop: '100px'}}>
                 <Button className={classes.stickToBottom} size="large" variant='contained' onClick={generateClicked}> Generate </Button>
             </Container>
-           
         </div>
     )
 }
 
 PwdGenerator.propTypes = {
     index: PropTypes.string,
-    value: PropTypes.string
+    value: PropTypes.string,
+    showSnackbar: PropTypes.func.isRequired
 }
 
 export default PwdGenerator
