@@ -22,6 +22,10 @@ const createWindow = () => {
     mainWindow.webContents.openDevTools();
 }
 
+if (process.env.NODE_ENV === 'test') {
+    window.electronRequire = require
+}
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.

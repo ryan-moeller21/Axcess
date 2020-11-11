@@ -68,9 +68,11 @@ function PwdBrowser (props) {
         setNewAccount(true)
     }
 
-    function resetNewAccount() {
+    function resetNewAccount(refreshAccounts) {
         setNewAccount(false)
-        getAccountsFromDatabase()
+
+        if (refreshAccounts)
+            getAccountsFromDatabase()
     }
 
     return (
@@ -94,7 +96,7 @@ function PwdBrowser (props) {
                 </Grid>
                 <Grid item>
                     {
-                        newAccount && <AddModal account={firebase.auth().currentUser} callback={resetNewAccount} aesKey={props.aesKey}/>
+                        newAccount && <AddModal account={firebase.auth().currentUser} callback={resetNewAccount} aesKey={props.aesKey} showSnackbar={props.showSnackbar}/>
                     }
                 </Grid>
             </Grid>
