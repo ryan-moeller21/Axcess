@@ -31,7 +31,11 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    
+    stickToBottom: {
+
+        position: 'fixed',
+        bottom: 130
+    },    
     colorPrimary: {
         colorPrimary: Colors['COLOR_PRIMARY']
     }
