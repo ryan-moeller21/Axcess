@@ -6,7 +6,6 @@ import clsx from "clsx"
 import { ExpandMore, VpnKey } from '@material-ui/icons'
 import copyToClipboard from 'copy-to-clipboard'
 import { SEVERITY } from '../top_level/SnackbarManager.jsx'
-import ScaleText from 'react-scale-text'
 
 const useStyles = makeStyles((theme) => ({
     root: {
