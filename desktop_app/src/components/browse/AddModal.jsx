@@ -5,6 +5,7 @@ import { Modal, Fade, Card, CardContent, Typography, Grid, TextField, Button } f
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import { putAccount } from '../../services/CryptoService.js'
+import { SEVERITY } from '../top_level/SnackbarManager.jsx'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -31,17 +32,20 @@ function AddModal (props) {
     const [accountName, setAccountName] = useState(undefined)
     const [password, setPassword] = useState(undefined)
 
-
     useEffect(() => { setOpen(true)} , [props.account])
 
     const handleClose = () => {
         setOpen(false)
-        props.callback()
+        props.callback(false)
     }
 
     const handleInsert = () => {
         const user = firebase.auth().currentUser
         putAccount(user.email, props.aesKey, website, accountName, password)
+            .then((result) => {
+                props.callback(true)
+                props.showSnackbar('Account successfully inserted.', SEVERITY.SUCCESS)
+            })
     }
     
     const classes = useStyles()
@@ -93,7 +97,8 @@ function AddModal (props) {
 AddModal.propTypes = {
     account: PropTypes.object,
     callback: PropTypes.func,
-    aesKey: PropTypes.string.isRequired
+    aesKey: PropTypes.string.isRequired,
+    showSnackbar: PropTypes.func.isRequired
 }
 
 export default AddModal
