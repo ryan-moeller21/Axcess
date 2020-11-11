@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
-import { ButtonBase, Card, CardActions, CardContent, CardMedia, Collapse, Grid, IconButton, Paper, Typography } from '@material-ui/core'
+import { Card, CardActions, CardContent, Collapse, Grid, IconButton, Typography, Container } from '@material-ui/core'
 import clsx from "clsx"
-import { ExpandMore } from '@material-ui/icons'
+import { ExpandMore, VpnKey } from '@material-ui/icons'
+import copyToClipboard from 'copy-to-clipboard'
+import { SEVERITY } from '../top_level/SnackbarManager.jsx'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -33,39 +35,45 @@ function AccountCard (props) {
         setExpanded(!expanded);
     }
 
+    const copyPasswordToClipboard = () => {
+        copyToClipboard(props.password)
+        props.showSnackbar('Password copied to clipboard!', SEVERITY.SUCCESS)
+    }
+
     const classes = useStyles()
     return (
         <Grid item>
             <Card className={classes.root}>
-                {/* <CardMedia
-                className={classes.media}
-                image="/src/components/Cat.jpg"
-                title="Website Icon" /> */}
                 <CardContent>
                     <img src={props.iconURL}/>
-                    <Typography variant='body1'>
+                    <Typography variant='h6' color='textPrimary'>
                         {props.website}
                     </Typography>
-                    <Typography variant='body1'>
+                    <Typography variant='body1' color='textSecondary'>
                         {props.accountName}
                     </Typography>
                 </CardContent>
                 <Collapse in={expanded}>
                     <CardContent>
-                        <Typography variant='body1'>
+                        <Typography variant='body1' style={{overflowWrap: 'break-word'}}>
                             {props.password}
                         </Typography>
                     </CardContent>
                 </Collapse>
                 <CardActions>
-                    <IconButton
-                        className={clsx(classes.expand, {
-                            [classes.expandOpen]: expanded,
-                        })}
-                        onClick={handleExpandClick}
-                    >
-                        <ExpandMore fontSize='small'/>
-                    </IconButton>
+                    <Container style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                        <IconButton
+                            onClick={copyPasswordToClipboard}>
+                            <VpnKey fontSize='small'/>
+                        </IconButton>
+                        <IconButton
+                            className={clsx(classes.expand, {
+                                [classes.expandOpen]: expanded,
+                            })}
+                            onClick={handleExpandClick}>
+                            <ExpandMore fontSize='small'/>
+                        </IconButton>
+                    </Container>
                 </CardActions>
             </Card>
         </Grid>
@@ -74,9 +82,10 @@ function AccountCard (props) {
 
 AccountCard.propTypes = {
     website: PropTypes.string.isRequired,
-    accountName:PropTypes.string.isRequired,
+    accountName: PropTypes.string.isRequired,
     password: PropTypes.string.isRequired,
-    iconURL: PropTypes.string.isRequired
+    iconURL: PropTypes.string.isRequired,
+    showSnackbar: PropTypes.func.isRequired
 }
 
 export default AccountCard

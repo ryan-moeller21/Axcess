@@ -1,9 +1,9 @@
 { 
-    "BACKGROUND": "#27323a",
-    "COLOR_PRIMARY": "#a3f7bf", 
-    "FONT_PRIMARY": "#eceff1", 
-    "FONT_SECONDARY": "#000000",
+    "BACKGROUND": "#181818",
+    "COLOR_PRIMARY": "#252526", 
+    "FONT_PRIMARY": "#FFFFFF", 
+    "FONT_SECONDARY": "#b3b3b3",
+    "FONT_DARK": "#000000",
     "GRAY_ACCENT": "#435055",
-    "BLUE_ACCENT": "#29a19c"
-    
+    "BLUE_ACCENT": "#68E877"
 }
