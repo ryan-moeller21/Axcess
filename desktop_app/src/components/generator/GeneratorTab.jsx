@@ -5,7 +5,7 @@ import { Button, Checkbox, Container, FormControl, FormControlLabel, FormGroup, 
 import Colors from '../Colors.json'
 import { SEVERITY } from '../top_level/SnackbarManager.jsx'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     FormLabel: {
         color: Colors['FONT_PRIMARY'],
         paddingBottom: 15,

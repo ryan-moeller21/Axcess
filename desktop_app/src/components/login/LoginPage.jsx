@@ -3,12 +3,9 @@ import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
 import { TextField, Container, Button, Card, Typography } from '@material-ui/core'
 import { tryLoginOrRegister } from '../../services/AuthService'
-import SnackbarManager, { SEVERITY } from '../top_level/SnackbarManager.jsx'
 import Colors from '../Colors.json'
 
-
 const useStyles = makeStyles(() => ({
-   
     textCenter: {
         textAlign: 'center',
         color: Colors['FONT_PRIMARY'],
@@ -51,34 +48,22 @@ export default function LoginPage (props) {
     const [passwordConfirm, setPasswordConfirm] = useState(undefined)
     const [createNewAccount, setCreateNewAccount] = useState(false)
 
-    // Snackbar State
-    const [snackbarOpen, setSnackbarOpen] = useState(false)
-    const [snackbarText, setSnackbarText] = useState('')
-    const [snackbarSeverity, setSnackbarSeverity] = useState(SEVERITY.ERROR)
-
-    let mounted = true
-
     var changeAuthTypeText = createNewAccount
         ? 'I already have an account'
         : 'I don\'t have an account yet'
 
-    const showSnackbar = (message, severity) => {
-        if (mounted) { // Without this if, we were updating the component when it wasn't being rendered any more, because we went into the app. This prevents that.
-            setSnackbarText(message)
-            setSnackbarSeverity(severity)
-            setSnackbarOpen(true)
-        }
-    }
-
+    /**
+     * Handles the main button press. Calls tryLoginOrRegister, which handles the logic of either logging in or registering the user, along with checking for 
+     * password correctness, account existance, and more.
+     */
     const signInClicked = () => {
         tryLoginOrRegister(email, password, createNewAccount ? passwordConfirm : undefined)
             .then((result) => {
-                mounted = false
                 props.setKey(result.key)
                 props.setIsLoggedIn(true)
             })
             .catch((error) => {
-                showSnackbar(error.msg, error.severity)
+                props.showSnackbar(error.msg, error.severity)
             })
     }
 
@@ -134,7 +119,6 @@ export default function LoginPage (props) {
                     <Button id="textHover" size="small" style={{ textDecorationLine: 'underline', transitionDuration: '0.1s' }} onClick={() => setCreateNewAccount(!createNewAccount)}>{changeAuthTypeText}</Button>
                 </form>
             </Card>
-            <SnackbarManager open={snackbarOpen} text={snackbarText} severity={snackbarSeverity} setOpen={setSnackbarOpen}/>
         </Container>
     )
 }
@@ -142,4 +126,5 @@ export default function LoginPage (props) {
 LoginPage.propTypes = {
     setIsLoggedIn: PropTypes.func.isRequired,
     setKey: PropTypes.func.isRequired,
+    showSnackbar: PropTypes.func.isRequired
 }

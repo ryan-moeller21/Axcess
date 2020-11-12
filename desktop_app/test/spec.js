@@ -1,11 +1,12 @@
 /* eslint-disable no-undef */
-const Application = require('spectron').Application
-const assert = require('assert')
-const electronPath = require('electron') // Require Electron from the binaries included in node_modules.
-const path = require('path')
-const chai = require('chai')
-const firebase = require('firebase')
-const CryptoService = require('../src/services/CryptoService.js')
+// const Application = ('spectron').Application
+import { Application } from 'spectron'
+import assert from 'assert'
+import electronPath from 'electron' // Require Electron from the binaries included in node_modules.
+import path from 'path'
+import chai from 'chai'
+import firebase from 'firebase'
+import { encrypt, decrypt, putAccount, getAccount, getAccounts } from '../src/services/CryptoService.js'
 
 // Testing Globals
 const exampleEmail = 'unittesting@example.com'
@@ -57,28 +58,28 @@ describe('Application Launch', function () {
     })
 })
 
+// Test encryption functionality
 describe('Encryption / Decryption', function () {
-    this.timeout(10000)
-
     it('Encryption Test', function () {
         const plaintext = 'unit testing is fun'
-        const ciphertext = CryptoService.encrypt(plaintext, exampleKey)
-        const decryptedCiphertext = CryptoService.decrypt(ciphertext, exampleKey)
+        const ciphertext = encrypt(plaintext, exampleKey)
+        const decryptedCiphertext = decrypt(ciphertext, exampleKey)
 
         expect(decryptedCiphertext).to.equal(plaintext)
     })
 })
 
+// Test database functionality
 describe('Database', function () { 
-
     before(function () {
         firebase.initializeApp(firebaseConfig)
     })
 
     describe('Insert Into Database', function () {
         it('Insert Account', function() {
-            CryptoService.putAccount(exampleEmail, exampleKey, exampleWebsite, exampleUsername, examplePassword)
+            putAccount(exampleEmail, exampleKey, exampleWebsite, exampleUsername, examplePassword)
                 .catch((error) => {
+                    console.log(error)
                     assert(0)
                 })
         })
@@ -86,22 +87,24 @@ describe('Database', function () {
 
     describe('Query Database', function () {
         it('Get Accounts', function () {
-            CryptoService.getAccounts(exampleEmail)
+            getAccounts(exampleEmail)
                 .then((accounts) => {
                     const accountData = accounts.data()
                     expect(Object.keys(accountData).length).to.greaterThan(0)
                     expect(accountData['www.facebook.com']['accountName']).to.equal('UnitTesting')
                 })
                 .catch((error) => {
+                    console.log(error)
                     assert(0)
                 })
         })
         it('Get Single Account', function() {
-            CryptoService.getAccount(exampleEmail, exampleKey, exampleWebsite)
+            getAccount(exampleEmail, exampleKey, exampleWebsite)
                 .then((password) => {
                     expect(password).to.equal(examplePassword)
                 })
                 .catch((error) => {
+                    console.log(error)
                     assert(0)
                 })
         })
