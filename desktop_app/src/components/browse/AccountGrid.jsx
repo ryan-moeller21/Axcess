@@ -12,11 +12,24 @@ const useStyles = makeStyles((theme) => ({
 
 function AccountGrid (props) {
     var idCounter = -1
+    const classes = useStyles()
+
+    const deleteCallback = (indexToRemove) => {
+        props.accountData.splice(indexToRemove, 1)
+    }
+
     const allAccounts = props.accountData.map((index) => {
-        return <AccountCard key={idCounter++} accountName={index.accountName} password={index.password} website={index.website} iconURL={index.icon} showSnackbar={props.showSnackbar}/>
+        return <AccountCard 
+            key={idCounter++}
+            index={idCounter} // The exact same as key. However, key is only available to React. Use this to remove deleted cards.
+            accountName={index.accountName} 
+            password={index.password}
+            website={index.website} 
+            iconURL={index.icon} 
+            deleteCallback={deleteCallback} 
+            showSnackbar={props.showSnackbar}/>
     })
 
-    const classes = useStyles()
     return (
         <div className={classes.root}>
             <Grid container spacing={4} justify='center'>
@@ -28,7 +41,6 @@ function AccountGrid (props) {
 
 AccountGrid.propTypes = {
     accountData: PropTypes.arrayOf(PropTypes.object).isRequired,
-    newAccountCallback: PropTypes.func,
     showSnackbar: PropTypes.func.isRequired
 }
 

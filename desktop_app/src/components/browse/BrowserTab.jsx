@@ -80,21 +80,25 @@ function PwdBrowser (props) {
      * Callback to handle closing of the new account modal.
      * @param {Boolean} refreshAccounts Whether or not to pull accounts from database
      */
-    function resetNewAccount(refreshAccounts) {
+    const resetNewAccount = (refreshAccounts) => {
         setNewAccount(false)
 
         if (refreshAccounts)
             getAccountsFromDatabase()
     }
 
+    const handleSearchItemClicked = (item) => {
+        console.log(`Clicked: ${item}`)
+    }
+
     return (
         <div className={classes.root} hidden={props.index !== props.value}>
-            { showSearch ? <SearchView onItemSelect={item => console.log(`Clicked: ${item}`)} /> : null }
+            { showSearch ? <SearchView onItemSelect={handleSearchItemClicked} /> : null }
             <Grid container>
                 <Grid item xs={12} >
-                    <IconButton className={classes.addButton} onClick={handleAddButton}>
+                    <Fab size='small' className={classes.searchButton} onClick={handleAddButton} >
                         <AddIcon />
-                    </IconButton>
+                    </Fab>
 
                     <Fab size='small' className={classes.searchButton} onClick={() => setShowSearch(!showSearch)}>
                         { showSearch ? <CloseIcon /> : <SearchIcon /> }
@@ -103,7 +107,7 @@ function PwdBrowser (props) {
                 </Grid>
                 <Grid item xs={12}>
                     { accountData &&
-                    <AccountGrid accountData={accountData} showSnackbar={props.showSnackbar}/>
+                        <AccountGrid accountData={accountData} showSnackbar={props.showSnackbar}/>
                     }
                 </Grid>
                 <Grid item>
