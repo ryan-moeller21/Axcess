@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
-import { Button, Checkbox, Container, FormControl, FormControlLabel, FormGroup, FormLabel, Slider, Typography } from '@material-ui/core'
+import { Button, Checkbox, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, FormControlLabel, FormGroup, FormLabel, Slider, Typography } from '@material-ui/core';
 import Colors from '../Colors.json'
 import { SEVERITY } from '../top_level/SnackbarManager.jsx'
+import copyToClipboard from 'copy-to-clipboard'
 
 const useStyles = makeStyles(() => ({
     FormLabel: {
@@ -30,6 +31,7 @@ const useStyles = makeStyles(() => ({
         justifyContent: 'center',
     },
     stickToBottom: {
+
         position: 'fixed',
         bottom: 50
     },
@@ -60,6 +62,9 @@ function PwdGenerator(props) {
     // Password State
     const [passwordLength, setPasswordLength] = useState(DEFAULT_PASSWORD_LENGTH)
     const [generatedPassword, setGeneratedPassword] = useState('')
+    
+    //Dialog State
+    const [open, setOpen] = React.useState(false);
 
     // Password Generation Parameters
     var allowedChars = ''
@@ -103,6 +108,15 @@ function PwdGenerator(props) {
             props.showSnackbar('Warning: Using passwords under ' + RECOMMENDED_PASSWORD_LENGTH + ' characters is discouraged.', SEVERITY.WARNING)
     }
 
+    const handleClose = () => {
+        copyToClipboard(generatedPassword)
+        props.showSnackbar('Password copied to clipboard!', SEVERITY.SUCCESS)
+        setOpen(false);
+    };
+
+    /*
+    
+    */
     const generateClicked = () => {
         if(!state.upperCase&&!state.lowerCase&&!state.numbers&&!state.symbols) {
             props.showSnackbar('Please select a set of characters.', SEVERITY.ERROR)
@@ -117,10 +131,10 @@ function PwdGenerator(props) {
                 }
             } while(!isGoodPassword(newPass))
 
-            if (isGoodPassword)
-                setGeneratedPassword(newPass)
-            else
-                setGeneratedPassword('Bad Password')
+
+            setGeneratedPassword(newPass)
+            setOpen(true);
+
         }
     }
 
@@ -215,16 +229,37 @@ function PwdGenerator(props) {
                     onChange={handleSlideChange}
                 />
             </Container>
-  
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">{"New Password"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        {generatedPassword}
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} size="large" variant='contained'>
+                        Copy
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            <Container className={classes.centerContent} style={{ position: 'relative', marginBottom:'75px'}}>
+                <Button className={classes.stickToBottom} size="large" variant='contained' disabled={!state.upperCase&&!state.lowerCase&&!state.numbers&&!state.symbols} onClick={generateClicked}> Generate </Button>
+            </Container>
             <Container className={classes.centerContent}>
                 <Typography variant='h4' style={{ color: Colors['FONT_PRIMARY'] }}>
                     { generatedPassword }
                 </Typography>
             </Container>
-            
+
             <Container className={classes.centerContent} style={{ position: 'relative', marginTop: '100px'}}>
                 <Button className={classes.stickToBottom} size="large" variant='contained' onClick={generateClicked}> Generate </Button>
             </Container>
+
         </div>
     )
 }
