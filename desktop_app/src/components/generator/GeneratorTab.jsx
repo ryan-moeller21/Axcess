@@ -4,8 +4,9 @@ import PropTypes from 'prop-types'
 import { Button, Checkbox, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, FormControlLabel, FormGroup, FormLabel, Slider, Typography } from '@material-ui/core';
 import Colors from '../Colors.json'
 import { SEVERITY } from '../top_level/SnackbarManager.jsx'
+import copyToClipboard from 'copy-to-clipboard'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     FormLabel: {
         color: Colors['FONT_PRIMARY'],
         paddingBottom: 15,
@@ -65,7 +66,6 @@ function PwdGenerator(props) {
     //Dialog State
     const [open, setOpen] = React.useState(false);
 
-
     // Password Generation Parameters
     var allowedChars = ''
     var charSpaceLen = 0
@@ -109,9 +109,14 @@ function PwdGenerator(props) {
     }
 
     const handleClose = () => {
+        copyToClipboard(generatedPassword)
+        props.showSnackbar('Password copied to clipboard!', SEVERITY.SUCCESS)
         setOpen(false);
     };
 
+    /*
+    
+    */
     const generateClicked = () => {
         if(!state.upperCase&&!state.lowerCase&&!state.numbers&&!state.symbols) {
             props.showSnackbar('Please select a set of characters.', SEVERITY.ERROR)
@@ -126,10 +131,10 @@ function PwdGenerator(props) {
                 }
             } while(!isGoodPassword(newPass))
 
-            if (isGoodPassword)
-                setGeneratedPassword(newPass)
-            else
-                setGeneratedPassword('Bad Password')
+
+            setGeneratedPassword(newPass)
+            setOpen(true);
+
         }
     }
 
