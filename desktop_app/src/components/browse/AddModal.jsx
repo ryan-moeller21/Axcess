@@ -7,7 +7,7 @@ import 'firebase/auth'
 import { putAccount } from '../../services/CryptoService.js'
 import { SEVERITY } from '../top_level/SnackbarManager.jsx'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     root: {
         display: 'flex',
         alignItems: 'center',

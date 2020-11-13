@@ -12,12 +12,11 @@ import CryptoJS from 'crypto-js'
  */
 export function putAccount(userEmail, aesKey, accountURL, accountName, accountPassword) {
     const db = firebase.firestore()
-    let accounts = { }
-
-    // Have to do it this way, otherwise JavaScript wants to use accountURL as a string literal instead of the variable's value for the keyname :(
-    accounts[accountURL] = {
-        accountName: accountName,
-        password: encrypt(accountPassword, aesKey)
+    let accounts = { 
+        [accountURL]: {
+            accountName: accountName,
+            password: encrypt(accountPassword, aesKey)
+        }
     }
 
     return db.collection('accounts').doc(userEmail).set({ accounts }, {merge: true})
@@ -54,6 +53,21 @@ export function getAccount(userEmail, aesKey, accountURL) {
                 reject({ err })
             })
     })
+}
+
+/**
+ * Removes an account from the user's list of accounts.
+ * @param {String} userEmail Email of the user who is logged into Axcess.
+ * @param {String} accountURL Email of the account the user wishes to remove.
+ */
+export function removeAccount(userEmail, accountURL) {
+    const db = firebase.firestore()
+    var userRef = db.collection('accounts').doc(userEmail)
+
+    return userRef.update(
+        new firebase.firestore.FieldPath('accounts', accountURL), 
+        firebase.firestore.FieldValue.delete() 
+    )
 }
 
 /**

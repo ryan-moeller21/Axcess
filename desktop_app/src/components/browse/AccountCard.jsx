@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
 import { Card, CardActions, CardContent, Collapse, Grid, IconButton, Typography, Container } from '@material-ui/core'
 import clsx from "clsx"
-import { ExpandMore, VpnKey, Delete } from '@material-ui/icons'
+import { ExpandMore, VpnKey, DeleteOutline } from '@material-ui/icons'
 import copyToClipboard from 'copy-to-clipboard'
 import { SEVERITY } from '../top_level/SnackbarManager.jsx'
 
@@ -42,7 +42,7 @@ function AccountCard (props) {
 
     const handleDelete = () => {
         handleExpandClick()
-        props.deleteCallback(props.index)
+        props.deleteCallback(props.index, props.website)
     }
 
     const classes = useStyles()
@@ -63,9 +63,8 @@ function AccountCard (props) {
                         <Typography variant='body1' style={{overflowWrap: 'break-word'}}>
                             {props.password}
                         </Typography>
-                        <IconButton
-                            onClick={handleDelete}>
-                            <Delete fontSize='small'/>
+                        <IconButton onClick={handleDelete} color='secondary'>
+                            <DeleteOutline fontSize='small'/>
                         </IconButton>
                     </CardContent>
                 </Collapse>
