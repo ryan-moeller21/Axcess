@@ -5,7 +5,7 @@ import AccountGrid from './AccountGrid.jsx'
 import AddModal from './AddModal.jsx'
 import SearchView from './SearchView.jsx'
 import firebase from 'firebase/app'
-import { Grid, IconButton, Fab } from '@material-ui/core'
+import { Grid, Fab } from '@material-ui/core'
 import SearchIcon from '@material-ui/icons/Search'
 import CloseIcon from '@material-ui/icons/Close'
 import AddIcon from '@material-ui/icons/Add'
@@ -88,7 +88,9 @@ function PwdBrowser (props) {
     }
 
     const handleSearchItemClicked = (item) => {
-        console.log(`Clicked: ${item}`)
+        // copyToClipboard()
+        // props.showSnackbar('Password copied to clipboard!', SEVERITY.SUCCESS)
+        console.log(item.currentTarget)
     }
 
     return (
@@ -99,21 +101,15 @@ function PwdBrowser (props) {
                     <Fab size='small' className={classes.searchButton} onClick={handleAddButton} >
                         <AddIcon />
                     </Fab>
-
                     <Fab size='small' className={classes.searchButton} onClick={() => setShowSearch(!showSearch)}>
                         { showSearch ? <CloseIcon /> : <SearchIcon /> }
                     </Fab>
-
                 </Grid>
                 <Grid item xs={12}>
-                    { accountData &&
-                        <AccountGrid accountData={accountData} showSnackbar={props.showSnackbar}/>
-                    }
+                    { accountData && <AccountGrid accountData={accountData} showSnackbar={props.showSnackbar}/> }
                 </Grid>
                 <Grid item>
-                    {
-                        newAccount && <AddModal account={firebase.auth().currentUser} callback={resetNewAccount} aesKey={props.aesKey} showSnackbar={props.showSnackbar}/>
-                    }
+                    { newAccount && <AddModal account={firebase.auth().currentUser} callback={resetNewAccount} aesKey={props.aesKey} showSnackbar={props.showSnackbar}/> }
                 </Grid>
             </Grid>
         </div>
