@@ -9,6 +9,7 @@ import copyToClipboard from 'copy-to-clipboard'
 const useStyles = makeStyles(() => ({
     FormLabel: {
         color: Colors['FONT_PRIMARY'],
+        marginTop: 10,
         paddingBottom: 15,
         paddingTop: 30
     },
@@ -229,6 +230,7 @@ function PwdGenerator(props) {
                     onChange={handleSlideChange}
                 />
             </Container>
+
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -252,7 +254,7 @@ function PwdGenerator(props) {
             </Container>
             <Container className={classes.centerContent}>
                 <Typography variant='h4' style={{ color: Colors['FONT_PRIMARY'] }}>
-                    { generatedPassword }
+                    { /* generatedPassword */ }
                 </Typography>
             </Container>
 
