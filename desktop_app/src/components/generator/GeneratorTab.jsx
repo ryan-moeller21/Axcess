@@ -230,7 +230,6 @@ function PwdGenerator(props) {
                     onChange={handleSlideChange}
                 />
             </Container>
-
             <Dialog
                 open={open}
                 onClose={handleClose}
