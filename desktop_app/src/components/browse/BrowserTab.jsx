@@ -35,15 +35,18 @@ function PwdBrowser (props) {
 
     const classes = useStyles()
 
+    if (!accountData) {
+        getAccountsFromDatabase()
+    }
+
     // Google has some fancy tool available that gets the favicons for us!
     const getFaviconURL = (domain) => {
         return 'https://s2.googleusercontent.com/s2/favicons?domain=' + domain
     }
 
-    if (!accountData) {
-        getAccountsFromDatabase()
-    }
-
+    /**
+     * Gets all accounts from the database, and then builds the Cards that each account will be displayed in.
+     */
     function getAccountsFromDatabase() {
         getAccounts(user.email)
             .then((result) => {
@@ -52,6 +55,7 @@ function PwdBrowser (props) {
 
                 // This implementation annoys me. Ideally I can call Object.keys(data).sort().values(), which should return all keys (website names), but that 
                 // returns an empty array iterator. In the meantime, this iteration over the indexes (which aren't empty, for some reason) works.
+                // Build the cards in sorted order.
                 const sortedKeys = Object.keys(data).sort()
                 for (var index in sortedKeys) {
                     var accountName = sortedKeys[index]
@@ -64,25 +68,37 @@ function PwdBrowser (props) {
                 console.log(error)
             })
     }
+
+    /**
+     * Opens up the new account modal.
+     */
     const handleAddButton = () => {
         setNewAccount(true)
     }
 
-    function resetNewAccount(refreshAccounts) {
+    /**
+     * Callback to handle closing of the new account modal.
+     * @param {Boolean} refreshAccounts Whether or not to pull accounts from database
+     */
+    const resetNewAccount = (refreshAccounts) => {
         setNewAccount(false)
 
         if (refreshAccounts)
             getAccountsFromDatabase()
     }
 
+    const handleSearchItemClicked = (item) => {
+        console.log(`Clicked: ${item}`)
+    }
+
     return (
         <div className={classes.root} hidden={props.index !== props.value}>
-            { showSearch ? <SearchView onItemSelect={item => console.log(`Clicked: ${item}`)} /> : null }
+            { showSearch ? <SearchView onItemSelect={handleSearchItemClicked} /> : null }
             <Grid container>
                 <Grid item xs={12} >
-                    <IconButton className={classes.addButton} onClick={handleAddButton}>
+                    <Fab size='small' className={classes.searchButton} onClick={handleAddButton} >
                         <AddIcon />
-                    </IconButton>
+                    </Fab>
 
                     <Fab size='small' className={classes.searchButton} onClick={() => setShowSearch(!showSearch)}>
                         { showSearch ? <CloseIcon /> : <SearchIcon /> }
@@ -91,7 +107,7 @@ function PwdBrowser (props) {
                 </Grid>
                 <Grid item xs={12}>
                     { accountData &&
-                    <AccountGrid accountData={accountData} showSnackbar={props.showSnackbar}/>
+                        <AccountGrid accountData={accountData} showSnackbar={props.showSnackbar}/>
                     }
                 </Grid>
                 <Grid item>

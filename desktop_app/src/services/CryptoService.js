@@ -93,8 +93,13 @@ export function encrypt(plaintext, key) {
  * Decrypts ciphertext using AES-256.
  * @param {String} ciphertext The text to be decrypted.
  * @param {String} key The key used for decryption, this is the hash of the master password.
+ * @returns {String} The decrypted text.
  */
 export function decrypt(ciphertext, key) {
+
+    if(ciphertext == null || ciphertext == '' || key == null || key == '')
+        return 'error'
+
     let bytes = CryptoJS.AES.decrypt(ciphertext, key)
     return bytes.toString(CryptoJS.enc.Utf8)
 }

@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
 import { Card, CardActions, CardContent, Collapse, Grid, IconButton, Typography, Container } from '@material-ui/core'
 import clsx from "clsx"
-import { ExpandMore, VpnKey } from '@material-ui/icons'
+import { ExpandMore, VpnKey, Delete } from '@material-ui/icons'
 import copyToClipboard from 'copy-to-clipboard'
 import { SEVERITY } from '../top_level/SnackbarManager.jsx'
 
@@ -40,6 +40,11 @@ function AccountCard (props) {
         props.showSnackbar('Password copied to clipboard!', SEVERITY.SUCCESS)
     }
 
+    const handleDelete = () => {
+        handleExpandClick()
+        props.deleteCallback(props.index)
+    }
+
     const classes = useStyles()
     return (
         <Grid item>
@@ -58,6 +63,10 @@ function AccountCard (props) {
                         <Typography variant='body1' style={{overflowWrap: 'break-word'}}>
                             {props.password}
                         </Typography>
+                        <IconButton
+                            onClick={handleDelete}>
+                            <Delete fontSize='small'/>
+                        </IconButton>
                     </CardContent>
                 </Collapse>
                 <CardActions>
@@ -81,10 +90,12 @@ function AccountCard (props) {
 }
 
 AccountCard.propTypes = {
+    index: PropTypes.number.isRequired,
     website: PropTypes.string.isRequired,
     accountName: PropTypes.string.isRequired,
     password: PropTypes.string.isRequired,
     iconURL: PropTypes.string.isRequired,
+    deleteCallback: PropTypes.func.isRequired,
     showSnackbar: PropTypes.func.isRequired
 }
 

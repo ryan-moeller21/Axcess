@@ -10,7 +10,7 @@
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "lint": "echo \"No linting configured\"",
-    "test": "mocha --exit --require @babel/register test/spec.js"
+    "test": "mocha --exit --require @babel/register --env=jsdom test/spec.js"
   },
   "keywords": [],
   "author": {
