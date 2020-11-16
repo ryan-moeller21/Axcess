@@ -27,10 +27,8 @@ export default function AuthContainer() {
 
     return (
         <Container>
-            {isLoggedIn ? (<MainPage aesKey={key} showSnackbar={showSnackbar}/>) : (<LoginPage setIsLoggedIn={setIsLoggedIn} setKey={setKey} showSnackbar={showSnackbar}/>)}
+            {isLoggedIn ? (<MainPage aesKey={key} showSnackbar={showSnackbar}/>) : (<LoginPage setKey={setKey} showSnackbar={showSnackbar}/>)}
             <SnackbarManager open={snackbarOpen} text={snackbarText} severity={snackbarSeverity} setOpen={setSnackbarOpen}/>
         </Container>
     )
-
-    //return isLoggedIn ? (<MainPage aesKey={key}/>) : (<LoginPage setIsLoggedIn={setIsLoggedIn} setKey={setKey} />)
 }
