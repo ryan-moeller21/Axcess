@@ -95,7 +95,6 @@ export default function LoginPage (props) {
                         }}
                         onChange={({ target: { value } }) => setEmail(value)}/>
                     <TextField
-                        id='passwordInput'
                         label='Password'
                         type='password'
                         variant="outlined"
