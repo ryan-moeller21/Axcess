@@ -60,11 +60,20 @@ export default function LoginPage (props) {
         tryLoginOrRegister(email, password, createNewAccount ? passwordConfirm : undefined)
             .then((result) => {
                 props.setKey(result.key)
-                props.setIsLoggedIn(true)
             })
             .catch((error) => {
                 props.showSnackbar(error.msg, error.severity)
             })
+    }
+
+    /**
+     * 
+     * @param {React.KeyboardEvent<HTMLDivElement>} event
+     */
+    const enterPressed = (event) => {
+        signInClicked()
+        event.target.blur()
+        document.getElementById('button').focus()
     }
 
     //TODO: Add logo?
@@ -97,7 +106,8 @@ export default function LoginPage (props) {
                         InputLabelProps={{
                             className: classes.input
                         }}
-                        onChange={({ target: { value } }) => setPassword(value)}/>
+                        onChange={({ target: { value } }) => setPassword(value)}
+                        onKeyDown={(event) => event.key === 'Enter' ? enterPressed(event) : null }/>
                     {
                         createNewAccount
                             ? <TextField
@@ -112,7 +122,8 @@ export default function LoginPage (props) {
                                 InputLabelProps={{
                                     className: classes.input
                                 }}
-                                onChange={({ target: { value } }) => setPasswordConfirm(value)}/>
+                                onChange={({ target: { value } }) => setPasswordConfirm(value)}
+                                onKeyDown={(event) => event.key === 'Enter' ? enterPressed(event) : null}/>
                             : undefined
                     }
                     <Button id="button" classes={{ label: 'loginButton' }} style={{ marginTop: 25, marginBottom: 15 }} variant='contained' onClick={signInClicked}>{createNewAccount ? 'Register' : 'Log In'}</Button>
@@ -124,7 +135,6 @@ export default function LoginPage (props) {
 }
 
 LoginPage.propTypes = {
-    setIsLoggedIn: PropTypes.func.isRequired,
     setKey: PropTypes.func.isRequired,
     showSnackbar: PropTypes.func.isRequired
 }
