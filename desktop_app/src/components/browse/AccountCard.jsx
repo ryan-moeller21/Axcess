@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
+import firebase from 'firebase'
 import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
 import { Card, CardActions, CardContent, Collapse, Grid, IconButton, Typography, Container } from '@material-ui/core'
 import clsx from "clsx"
-import { ExpandMore, VpnKey, DeleteOutline } from '@material-ui/icons'
+import { ExpandMore, VpnKey, DeleteOutline, Edit } from '@material-ui/icons'
 import copyToClipboard from 'copy-to-clipboard'
 import { SEVERITY } from '../top_level/SnackbarManager.jsx'
+import { editAccount } from '../../services/CryptoService.js'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -45,6 +47,12 @@ function AccountCard (props) {
         props.deleteCallback(props.index, props.website)
     }
 
+    const handleEdit = () => {
+        // editAccount(firebase.auth().currentUser.email, 'TODO: AES KEY HERE', props.website, 'TODO: New Account URL Here!', 'TODO: New Account Name here!', 'TODO: New Account Password Here!')
+
+        console.log(document.cookie)
+    }
+
     const classes = useStyles()
     return (
         <Grid item>
@@ -63,6 +71,9 @@ function AccountCard (props) {
                         <Typography variant='body1' style={{overflowWrap: 'break-word'}}>
                             {props.password}
                         </Typography>
+                        <IconButton onClick={handleEdit}>
+                            <Edit fontSize='small'/>
+                        </IconButton>
                         <IconButton onClick={handleDelete} color='secondary'>
                             <DeleteOutline fontSize='small'/>
                         </IconButton>

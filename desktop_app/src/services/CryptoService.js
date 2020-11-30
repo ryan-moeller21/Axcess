@@ -8,10 +8,12 @@ import CryptoJS from 'crypto-js'
  * @param {String} accountURL URL for the website being saved.
  * @param {String} accountName Name (or email) of the account being saved.
  * @param {String} accountPassword Password (plaintext!) for the account being saved.
+ * @param {firebase.firestore.Firestore} db Firestore reference, optional
  * @returns {Promise} A promise that signals when the data has been inserted.
  */
-export function putAccount(userEmail, aesKey, accountURL, accountName, accountPassword) {
-    const db = firebase.firestore()
+export function putAccount(userEmail, aesKey, accountURL, accountName, accountPassword, db = undefined) {
+    let dbRef = db == undefined ? firebase.firestore() : db
+
     let accounts = { 
         [accountURL]: {
             accountName: accountName,
@@ -19,7 +21,7 @@ export function putAccount(userEmail, aesKey, accountURL, accountName, accountPa
         }
     }
 
-    return db.collection('accounts').doc(userEmail).set({ accounts }, {merge: true})
+    return dbRef.collection('accounts').doc(userEmail).set({ accounts }, {merge: true})
 }
 
 /**
@@ -59,15 +61,31 @@ export function getAccount(userEmail, aesKey, accountURL) {
  * Removes an account from the user's list of accounts.
  * @param {String} userEmail Email of the user who is logged into Axcess.
  * @param {String} accountURL Email of the account the user wishes to remove.
+ * @param {firebase.firestore.Firestore} db Firestore reference, optional 
  */
-export function removeAccount(userEmail, accountURL) {
-    const db = firebase.firestore()
-    var userRef = db.collection('accounts').doc(userEmail)
+export function removeAccount(userEmail, accountURL, db = undefined) {
+    let dbRef = db == undefined ? firebase.firestore() : db
+    var userRef = dbRef.collection('accounts').doc(userEmail)
 
     return userRef.update(
         new firebase.firestore.FieldPath('accounts', accountURL), 
         firebase.firestore.FieldValue.delete() 
     )
+}
+
+export function editAccount(userEmail, aesKey, accountURL = '', newAccountURL = '', accountName = '', accountPassword = '') {
+    const db = firebase.firestore()
+    var userRef = db.collection('accounts').doc(userEmail)
+
+    return userRef.update( new firebase.firestore.FieldPath('accounts', accountURL), newAccountURL)
+
+    // Check to make sure all optional parameters are filled out in this case
+    /* CLUNKY, ideally we would just edit the name of the map!
+    if (accountURL != '' && accountName != '' && accountPassword != '') {
+        removeAccount(userEmail, accountURL, db)
+        putAccount(userEmail, aesKey, accountURL, accountName, accountPassword, db)
+    }
+    */
 }
 
 /**
