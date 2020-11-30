@@ -11,6 +11,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import AddIcon from '@material-ui/icons/Add'
 import { getAccounts, decrypt } from '../../services/CryptoService.js'
 import { makeStyles } from '@material-ui/core/styles'
+import ZeroState from './ZeroState.jsx'
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -50,17 +51,14 @@ function PwdBrowser (props) {
     function getAccountsFromDatabase() {
         getAccounts(user.email)
             .then((result) => {
-                var accounts = []
-                var data = result.data().accounts
+                if (!result.data()) return 
+                const data = result.data().accounts
 
-                // This implementation annoys me. Ideally I can call Object.keys(data).sort().values(), which should return all keys (website names), but that 
-                // returns an empty array iterator. In the meantime, this iteration over the indexes (which aren't empty, for some reason) works.
                 // Build the cards in sorted order.
-                const sortedKeys = Object.keys(data).sort()
-                for (var index in sortedKeys) {
-                    var accountName = sortedKeys[index]
-                    accounts.push(new Account(accountName, data[accountName]["accountName"], decrypt(data[accountName]["password"], props.aesKey), getFaviconURL(accountName)))
-                }
+                const accounts = Object.keys(data).sort().map((key) => {
+                    const { accountName, password } = data[key]
+                    return new Account(key, accountName, decrypt(password, props.aesKey), getFaviconURL(key))
+                })
 
                 setAccountData(accounts)
             })
@@ -93,32 +91,35 @@ function PwdBrowser (props) {
         console.log(item.currentTarget)
     }
 
+    const hasAccounts = () => accountData && accountData.length > 0
+
     return (
-        <div className={classes.root} hidden={props.index !== props.value}>
-            { showSearch ? <SearchView onItemSelect={handleSearchItemClicked} /> : null }
-            <Grid container>
-                <Grid item xs={12} >
-                    <Fab size='small' className={classes.searchButton} onClick={handleAddButton} >
-                        <AddIcon />
-                    </Fab>
-                    <Fab size='small' className={classes.searchButton} onClick={() => setShowSearch(!showSearch)}>
-                        { showSearch ? <CloseIcon /> : <SearchIcon /> }
-                    </Fab>
-                </Grid>
-                <Grid item xs={12}>
-                    { accountData && <AccountGrid accountData={accountData} showSnackbar={props.showSnackbar}/> }
-                </Grid>
+        <React.Fragment>
+            { showSearch && hasAccounts() && <SearchView onItemSelect={handleSearchItemClicked} /> }
+            <Grid container justify="center">
+                { hasAccounts() && <React.Fragment>
+                    <Grid item xs={12} >
+                        <Fab size='small' className={classes.searchButton} onClick={handleAddButton} >
+                            <AddIcon />
+                        </Fab>
+                        <Fab size='small' className={classes.searchButton} onClick={() => setShowSearch(!showSearch)}>
+                            { showSearch ? <CloseIcon /> : <SearchIcon /> }
+                        </Fab>
+                    </Grid>
+                    <Grid item xs={12}>
+                        { accountData && <AccountGrid accountData={accountData} showSnackbar={props.showSnackbar}/> }
+                    </Grid>
+                </React.Fragment> }
+                {!hasAccounts() && <ZeroState onCreateAccount={handleAddButton} />}
                 <Grid item>
                     { newAccount && <AddModal account={firebase.auth().currentUser} callback={resetNewAccount} aesKey={props.aesKey} showSnackbar={props.showSnackbar}/> }
                 </Grid>
             </Grid>
-        </div>
+        </React.Fragment>
     )
 }
 
 PwdBrowser.propTypes = {
-    index: PropTypes.string,
-    value: PropTypes.string,
     aesKey: PropTypes.string.isRequired,
     showSnackbar: PropTypes.func.isRequired
 }

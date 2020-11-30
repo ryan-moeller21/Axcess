@@ -11,21 +11,29 @@ const PAGES = {
 }
 
 function MainPage (props) {
-    const [value, setValue] = useState(PAGES.BROWSER)
+    const [tab, setTab] = useState(PAGES.BROWSER)
 
     /**
      * Handles changing of the current UI location.
      * @param {PAGES} newValue 
      */
     function handleTabChange (newValue) {
-        setValue(newValue)
+        setTab(newValue)
+    }
+
+    function CurrentTab() {
+        switch (tab) {
+        case PAGES.BROWSER:
+            return <BrowserTab aesKey={props.aesKey} showSnackbar={props.showSnackbar} />
+        case PAGES.GENERATOR:
+            return <GeneratorTab showSnackbar={props.showSnackbar}/>
+        }
     }
 
     return (
         <React.Fragment>
             <TopNav handleTabChange={handleTabChange} />
-            <GeneratorTab value={value} index={PAGES.GENERATOR} showSnackbar={props.showSnackbar} />
-            <BrowserTab value={value} aesKey={props.aesKey} index={PAGES.BROWSER} showSnackbar={props.showSnackbar} />
+            <CurrentTab />
         </React.Fragment>
     )
 }
