@@ -8,6 +8,7 @@ import { ExpandMore, VpnKey, DeleteOutline, Edit } from '@material-ui/icons'
 import copyToClipboard from 'copy-to-clipboard'
 import { SEVERITY } from '../top_level/SnackbarManager.jsx'
 import { editAccount } from '../../services/CryptoService.js'
+import { getCookie } from '../../services/CookieService.js'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -48,8 +49,7 @@ function AccountCard (props) {
     }
 
     const handleEdit = () => {
-        // editAccount(firebase.auth().currentUser.email, 'TODO: AES KEY HERE', props.website, 'TODO: New Account URL Here!', 'TODO: New Account Name here!', 'TODO: New Account Password Here!')
-
+        // editAccount(firebase.auth().currentUser.email, getCookie('key'), props.website, 'TODO: New Account URL Here!', 'TODO: New Account Name here!', 'TODO: New Account Password Here!')
         console.log(document.cookie)
     }
 

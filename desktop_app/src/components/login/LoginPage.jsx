@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { TextField, Container, Button, Card, Typography } from '@material-ui/core'
 import { tryLoginOrRegister } from '../../services/AuthService'
 import Colors from '../Colors.json'
+import { setCookie, getCookie } from '../../services/CookieService.js'
 
 const useStyles = makeStyles(() => ({
     textCenter: {
@@ -59,8 +60,8 @@ export default function LoginPage (props) {
     const signInClicked = () => {
         tryLoginOrRegister(email, password, createNewAccount ? passwordConfirm : undefined)
             .then((result) => {
-                props.setKey(result.key)
                 props.setIsLoggedIn(true)
+                setCookie('key', result.key)
             })
             .catch((error) => {
                 props.showSnackbar(error.msg, error.severity)
@@ -125,6 +126,5 @@ export default function LoginPage (props) {
 
 LoginPage.propTypes = {
     setIsLoggedIn: PropTypes.func.isRequired,
-    setKey: PropTypes.func.isRequired,
     showSnackbar: PropTypes.func.isRequired
 }

@@ -6,6 +6,7 @@ import firebase from 'firebase/app'
 import 'firebase/auth'
 import { putAccount } from '../../services/CryptoService.js'
 import { SEVERITY } from '../top_level/SnackbarManager.jsx'
+import { getCookie } from '../../services/CookieService.js'
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -41,8 +42,8 @@ function AddModal (props) {
 
     const handleInsert = () => {
         const user = firebase.auth().currentUser
-        putAccount(user.email, props.aesKey, website, accountName, password)
-            .then((result) => {
+        putAccount(user.email, getCookie('key'), website, accountName, password)
+            .then(() => {
                 props.callback(true)
                 props.showSnackbar('Account successfully inserted.', SEVERITY.SUCCESS)
             })
@@ -97,7 +98,6 @@ function AddModal (props) {
 AddModal.propTypes = {
     account: PropTypes.object,
     callback: PropTypes.func,
-    aesKey: PropTypes.string.isRequired,
     showSnackbar: PropTypes.func.isRequired
 }
 

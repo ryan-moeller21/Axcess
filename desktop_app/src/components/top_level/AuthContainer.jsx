@@ -8,7 +8,6 @@ import LoginPage from '../login/LoginPage.jsx'
 
 export default function AuthContainer() {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
-    const [key, setKey] = useState('')
 
     // Snackbar State
     const [snackbarOpen, setSnackbarOpen] = useState(false)
@@ -27,7 +26,7 @@ export default function AuthContainer() {
 
     return (
         <Container>
-            {isLoggedIn ? (<MainPage aesKey={key} showSnackbar={showSnackbar}/>) : (<LoginPage setIsLoggedIn={setIsLoggedIn} setKey={setKey} showSnackbar={showSnackbar}/>)}
+            {isLoggedIn ? (<MainPage showSnackbar={showSnackbar}/>) : (<LoginPage setIsLoggedIn={setIsLoggedIn} showSnackbar={showSnackbar}/>)}
             <SnackbarManager open={snackbarOpen} text={snackbarText} severity={snackbarSeverity} setOpen={setSnackbarOpen}/>
         </Container>
     )

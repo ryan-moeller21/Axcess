@@ -25,13 +25,12 @@ function MainPage (props) {
         <React.Fragment>
             <TopNav handleTabChange={handleTabChange} />
             <GeneratorTab value={value} index={PAGES.GENERATOR} showSnackbar={props.showSnackbar} />
-            <BrowserTab value={value} aesKey={props.aesKey} index={PAGES.BROWSER} showSnackbar={props.showSnackbar} />
+            <BrowserTab value={value} index={PAGES.BROWSER} showSnackbar={props.showSnackbar} />
         </React.Fragment>
     )
 }
 
 MainPage.propTypes = {
-    aesKey: PropTypes.string.isRequired,
     showSnackbar: PropTypes.func.isRequired
 }
 

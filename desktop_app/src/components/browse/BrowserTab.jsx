@@ -11,6 +11,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import AddIcon from '@material-ui/icons/Add'
 import { getAccounts, decrypt } from '../../services/CryptoService.js'
 import { makeStyles } from '@material-ui/core/styles'
+import { getCookie } from '../../services/CookieService.js'
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -59,7 +60,7 @@ function PwdBrowser (props) {
                 const sortedKeys = Object.keys(data).sort()
                 for (var index in sortedKeys) {
                     var accountName = sortedKeys[index]
-                    accounts.push(new Account(accountName, data[accountName]["accountName"], decrypt(data[accountName]["password"], props.aesKey), getFaviconURL(accountName)))
+                    accounts.push(new Account(accountName, data[accountName]["accountName"], decrypt(data[accountName]["password"], getCookie('key')), getFaviconURL(accountName)))
                 }
 
                 setAccountData(accounts)
@@ -109,7 +110,7 @@ function PwdBrowser (props) {
                     { accountData && <AccountGrid accountData={accountData} showSnackbar={props.showSnackbar}/> }
                 </Grid>
                 <Grid item>
-                    { newAccount && <AddModal account={firebase.auth().currentUser} callback={resetNewAccount} aesKey={props.aesKey} showSnackbar={props.showSnackbar}/> }
+                    { newAccount && <AddModal account={firebase.auth().currentUser} callback={resetNewAccount} showSnackbar={props.showSnackbar}/> }
                 </Grid>
             </Grid>
         </div>
@@ -119,7 +120,6 @@ function PwdBrowser (props) {
 PwdBrowser.propTypes = {
     index: PropTypes.string,
     value: PropTypes.string,
-    aesKey: PropTypes.string.isRequired,
     showSnackbar: PropTypes.func.isRequired
 }
 
