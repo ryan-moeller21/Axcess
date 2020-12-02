@@ -187,8 +187,7 @@ function PwdGenerator(props) {
     updateCharacterSet()
 
     return(
-        <div hidden={props.index !== props.value}>
-            
+        <React.Fragment>
             <Typography variant='h3'>
                 Password Generator
             </Typography>
@@ -261,13 +260,11 @@ function PwdGenerator(props) {
                 <Button className={classes.stickToBottom} size="large" variant='contained' onClick={generateClicked}> Generate </Button>
             </Container>
 
-        </div>
+        </React.Fragment>
     )
 }
 
 PwdGenerator.propTypes = {
-    index: PropTypes.string,
-    value: PropTypes.string,
     showSnackbar: PropTypes.func.isRequired
 }
 
