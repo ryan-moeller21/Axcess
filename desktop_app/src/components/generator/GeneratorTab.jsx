@@ -5,6 +5,7 @@ import { Button, Checkbox, Container, Dialog, DialogActions, DialogContent, Dial
 import Colors from '../Colors.json'
 import { SEVERITY } from '../top_level/SnackbarManager.jsx'
 import copyToClipboard from 'copy-to-clipboard'
+import {generatePassword} from '../../services/GeneratorService.js'
 
 const useStyles = makeStyles(() => ({
     FormLabel: {
@@ -54,12 +55,6 @@ function PwdGenerator(props) {
     const MAX_PASSWORD_LENGTH = 32
     const RECOMMENDED_PASSWORD_LENGTH = 15
 
-    // Password Generation Constants
-    const upperChars="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    const lowerChars="abcdefghijklmnopqrstuvwxyz"
-    const numericalChars="0123456789"
-    const symChars="!@#$%^&*()_+-={[}];:|?.>,<~"
-
     // Password State
     const [passwordLength, setPasswordLength] = useState(DEFAULT_PASSWORD_LENGTH)
     const [generatedPassword, setGeneratedPassword] = useState('')
@@ -67,40 +62,16 @@ function PwdGenerator(props) {
     //Dialog State
     const [open, setOpen] = React.useState(false);
 
-    // Password Generation Parameters
-    var allowedChars = ''
-    var charSpaceLen = 0
-
     const [state, setState] = React.useState({
         upperCase: true,
         lowerCase: true,
         numbers: true,
         symbols: false
     })
-
-    const updateCharacterSet = () => {
-        var tempCharSet = ''
-
-        if(state.upperCase) {
-            tempCharSet = tempCharSet.concat(upperChars)
-        }
-        if(state.lowerCase) {
-            tempCharSet = tempCharSet.concat(lowerChars)
-        }
-        if(state.numbers) {
-            tempCharSet = tempCharSet.concat(numericalChars)
-        }
-        if(state.symbols) {
-            tempCharSet = tempCharSet.concat(symChars)
-        }
-
-        allowedChars = tempCharSet
-        charSpaceLen = allowedChars.length
-    }
-
+    
     const handleCheckChange = (event) => {
         setState({...state, [event.target.name]: event.target.checked})
-        updateCharacterSet()
+       
     }
 
     const handleSlideChange = (event, newValue) => {
@@ -116,75 +87,19 @@ function PwdGenerator(props) {
     };
 
     /*
-    
+    Calls the generate password method from the genrator services file.
     */
     const generateClicked = () => {
         if(!state.upperCase&&!state.lowerCase&&!state.numbers&&!state.symbols) {
             props.showSnackbar('Please select a set of characters.', SEVERITY.ERROR)
         }
         else {
-            var newPass = ''
-            do {
-                newPass = ''
-                for(var iterator = 0; iterator < passwordLength; iterator ++) {
-                    /*Select a random character from our allowed characters and append to the generating password. */
-                    newPass = newPass.concat(allowedChars.charAt(Math.floor(Math.random() * charSpaceLen)))
-                }
-            } while(!isGoodPassword(newPass))
-
-
+            var newPass = generatePassword(state.upperCase, state.lowerCase, state.numbers, state.symbols, passwordLength)
             setGeneratedPassword(newPass)
             setOpen(true);
 
         }
     }
-
-    /*
-    Regular expressions for testing whether a password is "good"
-    */
-    const isUpperCase = (string) => /^[A-Z]*$/.test(string)
-    const isLowerCase = (string) => /^[a-z]*$/.test(string)
-    const isNumber = (string) => /^[0-9]*$/.test(string)
-    const isSymbol = (string) => /^[!@#$%^&*]*$/.test(string)
-    /* 
-    Checks if a given password includes all of the currently selected password criteria.
-    This is needed since the generation may or may not include all of the selected character types due to randomness.
-    */
-    function isGoodPassword(newPassword) {
-        var upperFlag = !state.upperCase
-        var lowerFlag = !state.lowerCase
-        var numFlag = !state.numbers
-        var symFlag = !state.symbols
-        var iterator
-        for(iterator = 0; iterator < passwordLength; iterator ++){
-            var current = newPassword.charAt(Math.floor(iterator))
-            if(state.upperCase){
-                if(isUpperCase(current)) {
-                    upperFlag = true
-                }
-            }
-            if(state.lowerCase){
-                if(isLowerCase(current)) {
-                    lowerFlag = true
-                }
-            }
-            if(state.numbers){
-                if(isNumber(current)) {
-                    numFlag = true
-                }
-            }
-            if(state.symbols){
-                if(isSymbol(current)) {
-                    symFlag = true
-                }
-            }
-        }
-            
-        return upperFlag && lowerFlag && numFlag && symFlag
-    }
-    
-    // Check the currently selected buttons to update password generation settings.
-    updateCharacterSet()
 
     return(
         <React.Fragment>
