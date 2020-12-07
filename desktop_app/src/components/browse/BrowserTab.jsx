@@ -12,6 +12,7 @@ import AddIcon from '@material-ui/icons/Add'
 import { getAccounts, decrypt } from '../../services/CryptoService.js'
 import { makeStyles } from '@material-ui/core/styles'
 import { getCookie } from '../../services/CookieService.js'
+import EditModal from './EditModal.jsx'
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -29,12 +30,15 @@ const useStyles = makeStyles(() => ({
 
 function PwdBrowser (props) {
     const user = firebase.auth().currentUser
-
     const [accountData, setAccountData] = useState(null)
     const [newAccount, setNewAccount] = useState(false)
+    const [editAccount, setEditAccount] = useState(false)
     const [showSearch, setShowSearch] = useState(false)
 
     const classes = useStyles()
+
+    const [editWebsite, setEditWebsite] = useState('')
+    const [editWebsiteName, setEditWebsiteName] = useState('')
 
     if (!accountData) {
         getAccountsFromDatabase()
@@ -88,6 +92,26 @@ function PwdBrowser (props) {
             getAccountsFromDatabase()
     }
 
+    /**
+     * Callback to handle toggling of the edit account modal.
+     * @param {Boolean} refreshAccounts Whether or not to pull accounts from database
+     */
+    const resetEditAccount = (refreshAccounts) => {
+        setEditAccount(false)
+
+        if (refreshAccounts)
+            getAccountsFromDatabase()
+    }
+
+    const handleEditButtonClicked = (website, websiteAccount, refreshAccounts) => {
+        setEditAccount(!editAccount)
+        setEditWebsite(website)
+        setEditWebsiteName(websiteAccount)
+
+        if (refreshAccounts)
+            getAccountsFromDatabase()
+    }
+
     const handleSearchItemClicked = (item) => {
         // copyToClipboard()
         // props.showSnackbar('Password copied to clipboard!', SEVERITY.SUCCESS)
@@ -107,10 +131,13 @@ function PwdBrowser (props) {
                     </Fab>
                 </Grid>
                 <Grid item xs={12}>
-                    { accountData && <AccountGrid accountData={accountData} showSnackbar={props.showSnackbar}/> }
+                    { accountData && <AccountGrid accountData={accountData} editCard={handleEditButtonClicked} showSnackbar={props.showSnackbar}/> }
                 </Grid>
                 <Grid item>
                     { newAccount && <AddModal account={firebase.auth().currentUser} callback={resetNewAccount} showSnackbar={props.showSnackbar}/> }
+                </Grid>
+                <Grid>
+                    { editAccount && <EditModal account={firebase.auth().currentUser} website={editWebsite} websiteAccount={editWebsiteName} callback={resetEditAccount} showSnackbar={props.showSnackbar}/>}
                 </Grid>
             </Grid>
         </div>

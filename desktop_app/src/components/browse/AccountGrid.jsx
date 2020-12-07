@@ -38,6 +38,7 @@ function AccountGrid (props) {
             website={index.website} 
             iconURL={index.icon} 
             deleteCallback={deleteCallback} 
+            editCard={props.editCard}
             showSnackbar={props.showSnackbar}/>
     })
 
@@ -52,6 +53,7 @@ function AccountGrid (props) {
 
 AccountGrid.propTypes = {
     accountData: PropTypes.arrayOf(PropTypes.object).isRequired,
+    editCard: PropTypes.func.isRequired,
     showSnackbar: PropTypes.func.isRequired
 }
 

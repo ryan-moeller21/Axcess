@@ -49,8 +49,7 @@ function AccountCard (props) {
     }
 
     const handleEdit = () => {
-        // editAccount(firebase.auth().currentUser.email, getCookie('key'), props.website, 'TODO: New Account URL Here!', 'TODO: New Account Name here!', 'TODO: New Account Password Here!')
-        console.log(document.cookie)
+        props.editCard(props.website, props.accountName, true)
     }
 
     const classes = useStyles()
@@ -106,6 +105,7 @@ AccountCard.propTypes = {
     password: PropTypes.string.isRequired,
     iconURL: PropTypes.string.isRequired,
     deleteCallback: PropTypes.func.isRequired,
+    editCard: PropTypes.func.isRequired,
     showSnackbar: PropTypes.func.isRequired
 }
 

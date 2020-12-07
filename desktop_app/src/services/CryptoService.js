@@ -75,17 +75,18 @@ export function removeAccount(userEmail, accountURL, db = undefined) {
 
 export function editAccount(userEmail, aesKey, accountURL = '', newAccountURL = '', accountName = '', accountPassword = '') {
     const db = firebase.firestore()
-    var userRef = db.collection('accounts').doc(userEmail)
-
-    return userRef.update( new firebase.firestore.FieldPath('accounts', accountURL), newAccountURL)
 
     // Check to make sure all optional parameters are filled out in this case
-    /* CLUNKY, ideally we would just edit the name of the map!
+    // CLUNKY, ideally we would just edit the name of the map!
     if (accountURL != '' && accountName != '' && accountPassword != '') {
-        removeAccount(userEmail, accountURL, db)
-        putAccount(userEmail, aesKey, accountURL, accountName, accountPassword, db)
+        return removeAccount(userEmail, accountURL, db)
+            .then(() => {
+                return putAccount(userEmail, aesKey, newAccountURL, accountName, accountPassword, db)
+            })
+        
     }
-    */
+
+    // return userRef.update( new firebase.firestore.FieldPath('accounts', accountURL), newAccountURL)
 }
 
 /**
